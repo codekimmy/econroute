@@ -1,77 +1,202 @@
-/* 경제 내비 (ECON ROUTE) — Blogger 공통 스타일
-   Blogger: 테마 > 맞춤설정 > 고급 > CSS 추가 에 통째로 붙여넣기 */
+/* ECON ROUTE v4 - night drive (Blogger / Contempo)
+   Paste whole file into: Theme - Customize - Advanced - Add CSS (replace old CSS)
+   ASCII only, no angle brackets: Blogger breaks them. */
 
 :root {
-  --wes-green: #1f9d55;  --wes-green-bg: #e9f7ef;
-  --wes-yellow: #c98a00; --wes-yellow-bg: #fff6dd;
-  --wes-red: #d93a3a;    --wes-red-bg: #fdecec;
-  --wes-hold: #7a7a7a;   --wes-hold-bg: #f1f1f1;
-  --wes-ink: #1d1d1f;    --wes-quiet: #6b6b70; --wes-line: #e3e3e6;
+  --night: #0E1013; --panel: #16191D; --panel-hi: #1E2227; --panel-lo: #121417; --edge: rgba(255,255,255,.07);
+  --lamp-off: #2E3238; --lamp-red: #FF4B3E; --lamp-yellow: #FFB000; --lamp-green: #1FD17A; --route-red: #E5372B;
+  --sign-green: #0F8A57; --sign-green-lo: #0B6B45; --sign-blue: #1F5FC4; --lane: #F2B705;
+  --text: #E4E7EB; --text-2: #B8BDC3; --text-3: #8E949B; --white: #FFFFFF; --link: #8AB4FF;
+  --work: #E07B00;
+  --font: 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  --num: 'Barlow Condensed', 'Noto Sans KR', 'Arial Narrow', sans-serif;
 }
 
-/* 10초 신호등 박스 (글 맨 위) */
-.wes-signal { border-left: 6px solid var(--wes-hold); background: var(--wes-hold-bg);
-  border-radius: 10px; padding: 14px 16px; margin: 0 0 20px; }
-.wes-signal .wes-light { font-weight: 700; font-size: 1.05em; }
-.wes-signal .wes-oneline { margin: 6px 0 0; font-size: 1.05em; color: var(--wes-ink); }
-.wes-signal .wes-meta { margin-top: 6px; font-size: .85em; color: var(--wes-quiet); }
-.wes-signal.green  { border-color: var(--wes-green);  background: var(--wes-green-bg); }
-.wes-signal.yellow { border-color: var(--wes-yellow); background: var(--wes-yellow-bg); }
-.wes-signal.red    { border-color: var(--wes-red);    background: var(--wes-red-bg); }
-.wes-signal.green .wes-light  { color: var(--wes-green); }
-.wes-signal.yellow .wes-light { color: var(--wes-yellow); }
-.wes-signal.red .wes-light    { color: var(--wes-red); }
+/* ---------- night page with map grid ---------- */
+html, body { background-color: var(--night) !important; }
+body { background-image: linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px) !important;
+  background-size: 44px 44px !important; color: var(--text); font-family: var(--font); }
+.bg-photo-container, .bg-photo-overlay, .bg-photo { display: none !important; }
+a { color: var(--link); }
 
-/* 나비효과 체인 */
-.wes-chain { list-style: none; padding: 0; margin: 16px 0; counter-reset: c; }
-.wes-chain li { position: relative; padding: 10px 12px 10px 44px; margin: 0 0 22px;
-  border: 1px solid var(--wes-line); border-radius: 10px; counter-increment: c; }
-.wes-chain li::before { content: counter(c); position: absolute; left: 12px; top: 10px;
-  width: 22px; height: 22px; border-radius: 50%; background: var(--wes-ink); color: #fff;
-  font-size: .8em; text-align: center; line-height: 22px; }
-.wes-chain li:not(:last-child)::after { content: "↓"; position: absolute; left: 50%; bottom: -21px;
-  color: var(--wes-quiet); }
-.wes-chain .wes-lag { color: var(--wes-quiet); font-size: .85em; margin-left: 6px; }
-.wes-chain li:last-child { border-color: var(--wes-ink); font-weight: 600; } /* 끝은 항상 생활 항목 */
+/* ---------- theme header slimmed: our masthead lives in the dashboard gadget ---------- */
+.centered-top-container, .centered-top-container.sticky, .centered-top, .centered-top-firstline { background: transparent !important; box-shadow: none !important; }
+.Header h1, .Header .title, .Header .description, .Header p.description { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.centered-top .svg-icon-24, .hamburger-menu .svg-icon-24, .search .svg-icon-24, .svg-icon-24 { fill: var(--text) !important; }
+.search, .search input { color: var(--text) !important; }
 
-/* 내 지갑 환산 */
-.wes-wallet { background: #f6f8fb; border-radius: 10px; padding: 12px 16px; margin: 16px 0; }
-.wes-wallet b { font-size: 1.1em; }
+/* ---------- side panel ---------- */
+.sidebar-container { background: var(--panel-lo) !important; color: var(--text-2); }
+.sidebar-container .widget .title, .sidebar-container h3 { color: var(--white) !important; font-weight: 800 !important; font-size: 16px; }
+.sidebar-container a { color: var(--text) !important; }
+.sidebar-container .widget { border-color: var(--edge) !important; }
 
-/* 접힌 근거 상자 */
-details.wes-evidence { border: 1px solid var(--wes-line); border-radius: 10px; padding: 10px 14px;
-  margin: 24px 0; font-size: .9em; color: var(--wes-quiet); }
-details.wes-evidence summary { cursor: pointer; font-weight: 600; color: var(--wes-ink); }
+/* ---------- dashboard gadget (#wes-signals) ---------- */
+#wes-signals, #wes-signals * { box-sizing: border-box; }
+#wes-signals { color: var(--text); overflow-wrap: anywhere; word-break: keep-all; }
+.page_body .widget.HTML h3.title:empty, .page_body .widget.HTML h2.title:empty { display: none; }
 
-/* 재확인 배너 (자기 점검 루프) */
-.wes-recheck { border-radius: 10px; padding: 10px 14px; margin: 0 0 16px; font-size: .92em;
-  background: #eef3ff; border: 1px solid #c9d6ff; }
+#wes-signals .wes-mast { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 22px; align-items: center; padding: 6px 0 22px; }
+#wes-signals .wes-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--white); }
+#wes-signals .wes-logo { width: 46px; height: 46px; flex: none; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M8 32 C 8 20, 32 22, 32 8' fill='none' stroke='%23FFFFFF' stroke-width='2.6' stroke-dasharray='3.5 3.5' stroke-linecap='round'/%3E%3Ccircle cx='8' cy='32' r='4.2' fill='%231FD17A'/%3E%3Ccircle cx='20' cy='20.6' r='4.2' fill='%23FFB000'/%3E%3Ccircle cx='32' cy='8' r='4.2' fill='%23FF4B3E'/%3E%3C/svg%3E") no-repeat center / contain; }
+#wes-signals .wes-brand b { display: block; font-size: 30px; font-weight: 900; letter-spacing: -0.04em; line-height: 1; color: var(--white); }
+#wes-signals .wes-brand small { display: block; margin-top: 6px; font-family: var(--num); font-weight: 600; font-size: 11px; letter-spacing: .38em; color: var(--lane); }
+#wes-signals .wes-next { display: flex; align-items: center; gap: 16px; min-width: 0; padding: 12px 18px; border-radius: 16px;
+  background: linear-gradient(135deg, var(--sign-green), var(--sign-green-lo)); box-shadow: 0 10px 30px -12px rgba(15,138,87,.7); }
+#wes-signals .wes-turn { width: 34px; height: 34px; flex: none; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 20 L7 11 Q7 6 12 6 L16 6' fill='none' stroke='%23FFFFFF' stroke-width='2.6' stroke-linecap='round'/%3E%3Cpath d='M14 2.5 L19.5 6 L14 9.5 Z' fill='%23FFFFFF'/%3E%3C/svg%3E") no-repeat center / contain; }
+#wes-signals .wes-next-t { min-width: 0; }
+#wes-signals .wes-next-t small { display: block; font-size: 12px; color: #BDE8D2; }
+#wes-signals .wes-next-t b { display: block; font-size: 20px; font-weight: 800; color: var(--white); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#wes-signals .wes-dday { margin-left: auto; font-family: var(--num); font-weight: 700; font-size: 30px; color: var(--white); white-space: nowrap; }
+#wes-signals .wes-stat { text-align: right; }
+#wes-signals .wes-cnt { display: flex; gap: 8px; justify-content: flex-end; }
+#wes-signals .wes-cnt span { display: inline-flex; align-items: center; gap: 6px; background: var(--panel-hi); border-radius: 999px; padding: 5px 11px;
+  font-family: var(--num); font-weight: 700; font-size: 15px; color: var(--white); }
+#wes-signals .wes-cnt i { display: block; width: 10px; height: 10px; border-radius: 50%; }
+#wes-signals .wes-cnt-red i { background: var(--lamp-red); }
+#wes-signals .wes-cnt-yellow i { background: var(--lamp-yellow); }
+#wes-signals .wes-cnt-green i { background: var(--lamp-green); }
+#wes-signals .wes-stat small { display: block; margin-top: 8px; font-family: var(--num); font-size: 13px; letter-spacing: .06em; color: var(--text-3); }
+#wes-signals .wes-lane { height: 2px; margin: 0 0 30px; background: linear-gradient(90deg, transparent, var(--lane) 15%, var(--lane) 85%, transparent); opacity: .6; }
 
-/* 용어 팝업 */
-.wes-term { border-bottom: 1px dotted currentColor; cursor: help; }
-.wes-tip { position: absolute; z-index: 9999; max-width: 300px; background: #1d1d1f; color: #fff;
-  border-radius: 10px; padding: 12px 14px; font-size: 14px; line-height: 1.5;
-  box-shadow: 0 6px 20px rgba(0,0,0,.18); }
-.wes-tip .wes-tip-term { font-weight: 700; margin-bottom: 4px; }
-.wes-tip .wes-tip-ex { margin-top: 6px; color: #cfcfd4; font-size: 13px; }
-.wes-tip a { color: #9ec1ff; display: inline-block; margin-top: 6px; }
+#wes-signals .wes-h { display: flex; align-items: center; gap: 10px; margin: 0 0 16px; font-size: 20px; font-weight: 800; color: var(--white); }
+#wes-signals .wes-h-badge { width: 28px; height: 28px; border-radius: 8px; flex: none; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 20 L7 11 Q7 6 12 6 L16 6' fill='none' stroke='%23FFFFFF' stroke-width='2.6' stroke-linecap='round'/%3E%3Cpath d='M14 2.5 L19.5 6 L14 9.5 Z' fill='%23FFFFFF'/%3E%3C/svg%3E") no-repeat center / 16px 16px, var(--sign-blue); }
 
-/* 홈 '오늘의 신호' 카드 */
-.wes-cards { display: grid; gap: 10px; margin: 8px 0 16px; }
-.wes-card { border-radius: 10px; padding: 12px 14px; border-left: 6px solid var(--wes-hold);
-  background: var(--wes-hold-bg); }
-.wes-card.green  { border-color: var(--wes-green);  background: var(--wes-green-bg); }
-.wes-card.yellow { border-color: var(--wes-yellow); background: var(--wes-yellow-bg); }
-.wes-card.red    { border-color: var(--wes-red);    background: var(--wes-red-bg); }
-.wes-card .wes-card-name { font-weight: 700; }
-.wes-card .wes-card-reason { margin-top: 4px; font-size: .92em; }
-.wes-card .wes-card-meta { margin-top: 4px; font-size: .8em; color: var(--wes-quiet); }
-.wes-foot { font-size: .8em; color: var(--wes-quiet); }
+#wes-signals .wes-cards { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+#wes-signals .wes-card { display: flex; flex-direction: column; gap: 12px; padding: 18px; border-radius: 18px;
+  background: linear-gradient(160deg, var(--panel-hi), var(--panel)); border: 1px solid var(--edge); }
+#wes-signals .wes-card-top { display: flex; align-items: center; gap: 12px; }
+#wes-signals .wes-lamps { display: inline-flex; gap: 6px; padding: 6px 8px; border-radius: 16px; background: #090A0C; flex: none; }
+#wes-signals .wes-lamps i { display: block; width: 16px; height: 16px; border-radius: 50%; background: var(--lamp-off); }
+#wes-signals .wes-card.red .wes-lamps i:nth-child(1) { background: var(--lamp-red); box-shadow: 0 0 12px var(--lamp-red); }
+#wes-signals .wes-card.yellow .wes-lamps i:nth-child(2) { background: var(--lamp-yellow); box-shadow: 0 0 12px var(--lamp-yellow); }
+#wes-signals .wes-card.green .wes-lamps i:nth-child(3) { background: var(--lamp-green); box-shadow: 0 0 12px var(--lamp-green); }
+#wes-signals .wes-card-titles { display: flex; flex-direction: column; min-width: 0; }
+#wes-signals .wes-card-word { font-size: 12px; font-weight: 800; }
+#wes-signals .wes-card.red .wes-card-word { color: var(--lamp-red); }
+#wes-signals .wes-card.yellow .wes-card-word { color: var(--lamp-yellow); }
+#wes-signals .wes-card.green .wes-card-word { color: var(--lamp-green); }
+#wes-signals .wes-card-name { font-size: 18px; font-weight: 800; letter-spacing: -0.02em; color: var(--white); }
+#wes-signals .wes-card-num b { font-family: var(--num); font-weight: 700; font-size: 34px; line-height: 1; color: var(--white); white-space: nowrap; }
+#wes-signals .wes-card-num small { margin-left: 8px; font-family: var(--num); font-weight: 600; font-size: 16px; color: #A6ACB3; white-space: nowrap; }
+#wes-signals .wes-card-reason { font-size: 13.5px; line-height: 1.6; color: var(--text-2); }
+#wes-signals .wes-sign { display: flex; align-items: center; padding: 10px 14px; border-radius: 12px; font-weight: 700; font-size: 14px; color: var(--white);
+  background: linear-gradient(135deg, var(--sign-green), var(--sign-green-lo)); }
+#wes-signals .wes-sign b { margin-left: auto; font-family: var(--num); font-size: 17px; }
+#wes-signals .wes-card-meta { font-family: var(--num); font-size: 13px; letter-spacing: .03em; color: var(--text-3); }
+#wes-signals .wes-foot { margin: 12px 0 0; font-size: 12px; color: var(--text-3); }
 
-/* 유료라 쓰지 않은 자료 공개 */
-details.wes-paid { margin-top: 8px; font-size: .82em; color: var(--wes-quiet); }
-details.wes-paid summary { cursor: pointer; font-weight: 600; color: var(--wes-ink); }
-details.wes-paid ul { margin: 6px 0 0; padding-left: 18px; }
-details.wes-paid li { margin: 4px 0; line-height: 1.5; }
-.wes-paid-line { display: block; margin-top: 6px; padding: 8px 10px; background: #fff6dd; border-radius: 8px; color: var(--wes-ink); }
-.wes-paid-up { margin-top: 2px; color: #17345F; }
+#wes-signals .wes-row { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; margin-top: 26px; }
+#wes-signals .wes-panel { padding: 20px 22px; border-radius: 18px; background: var(--panel); border: 1px solid var(--edge); }
+#wes-signals .wes-panel-h { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-size: 16px; font-weight: 800; color: var(--white); }
+#wes-signals .wes-warn { width: 18px; height: 18px; flex: none; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 3 L22 20 L2 20 Z' fill='none' stroke='%23FFFFFF' stroke-width='2' stroke-linejoin='round'/%3E%3Cpath d='M12 10 V14 M12 17 V17.3' stroke='%23FFFFFF' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat center / contain; }
+#wes-signals .wes-ev { display: flex; gap: 14px; align-items: baseline; padding: 11px 0; border-bottom: 1px solid var(--edge); }
+#wes-signals .wes-ev b { min-width: 58px; font-family: var(--num); font-weight: 700; font-size: 19px; color: var(--white); }
+#wes-signals .wes-ev span { font-size: 14px; color: var(--text-2); }
+#wes-signals .wes-ev em { margin-left: auto; font-style: normal; font-family: var(--num); font-weight: 700; font-size: 17px; color: var(--lane); }
+#wes-signals .wes-ev-empty, #wes-signals .wes-panel-note { font-size: 13px; color: var(--text-3); }
+#wes-signals .wes-odo { display: flex; gap: 4px; margin: 8px 0 10px; }
+#wes-signals .wes-odo span { width: 30px; height: 42px; border-radius: 6px; background: #090A0C; display: flex; align-items: center; justify-content: center;
+  font-family: var(--num); font-weight: 700; font-size: 26px; color: var(--white); }
+#wes-signals .wes-odo span.on { color: var(--lane); }
+
+#wes-signals details.wes-paid { margin-top: 16px; padding: 16px 18px 14px; border-radius: 14px; background-color: var(--panel); border: 1px solid var(--edge);
+  background-image: repeating-linear-gradient(135deg, var(--work) 0 8px, #0E1013 8px 16px); background-size: 100% 4px; background-repeat: no-repeat;
+  font-size: 13px; line-height: 1.6; color: var(--text-2); }
+#wes-signals details.wes-paid summary { cursor: pointer; font-weight: 800; font-size: 14.5px; color: var(--white); }
+#wes-signals details.wes-paid ul { margin: 8px 0 0; padding-left: 18px; }
+#wes-signals details.wes-paid li { margin: 6px 0; }
+#wes-signals .wes-paid-up { margin-top: 2px; color: var(--link); }
+
+/* ---------- post list & post page ---------- */
+.post-outer-container, .Blog .post-outer-container { background: var(--panel) !important; border: 1px solid var(--edge) !important; border-radius: 18px !important; box-shadow: none !important; }
+.post-title, .post-title a, h3.post-title, h3.post-title a { color: var(--white) !important; font-family: var(--font) !important; font-weight: 900 !important; letter-spacing: -0.03em; line-height: 1.32; }
+.item-view h3.post-title, .item-view .post-title { font-size: 30px !important; }
+.Blog .post-outer-container h3.post-title { font-size: 24px; }
+.byline, .post-header .byline, .post-footer .byline, .byline a { color: var(--text-3) !important; }
+.snippet-item, .post-snippet, .snippet-container { color: var(--text-2) !important; }
+.snippet-fade { background: linear-gradient(90deg, rgba(22,25,29,0), var(--panel)) !important; }
+.jump-link a, .flat-button { color: var(--lane) !important; font-weight: 800; }
+.post-body { color: #D9DDE2; font-family: var(--font); font-size: 16px; line-height: 1.85; }
+.post-body b, .post-body strong { color: var(--white); }
+.post-body a { color: var(--link); }
+.post-body h2 { display: flex; align-items: center; gap: 10px; margin: 40px 0 14px; font-size: 22px; font-weight: 800; letter-spacing: -0.02em; color: var(--white); }
+.post-body h2::before { content: ""; width: 28px; height: 28px; border-radius: 8px; flex: none; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 20 L7 11 Q7 6 12 6 L16 6' fill='none' stroke='%23FFFFFF' stroke-width='2.6' stroke-linecap='round'/%3E%3Cpath d='M14 2.5 L19.5 6 L14 9.5 Z' fill='%23FFFFFF'/%3E%3C/svg%3E") no-repeat center / 16px 16px, var(--sign-blue); }
+.post-body h3 { display: inline-block; margin: 26px 0 8px; font-size: 18px; font-weight: 800; color: var(--white); border-bottom: 2px solid var(--lane); padding-bottom: 2px; }
+.post-body table { border-collapse: collapse; width: 100%; font-size: 14px; }
+.post-body th { background: var(--panel-hi); color: var(--white); font-weight: 700; padding: 9px 12px; text-align: left; }
+.post-body td { border-bottom: 1px solid var(--edge); padding: 9px 12px; }
+.comments, .comments h3, .post-footer, .footer-outer, .Attribution, .Attribution a { color: var(--text-3) !important; }
+
+/* signal box */
+.wes-signal { --l1: var(--lamp-off); --l2: var(--lamp-off); --l3: var(--lamp-off); --lc: var(--white);
+  background: linear-gradient(160deg, var(--panel-hi), var(--panel-lo)); border: 1px solid var(--edge); color: var(--white);
+  border-radius: 18px; padding: 20px 22px; margin: 0 0 26px; }
+.wes-signal.red { --l1: var(--lamp-red); --lc: var(--lamp-red); }
+.wes-signal.yellow { --l2: var(--lamp-yellow); --lc: var(--lamp-yellow); }
+.wes-signal.green { --l3: var(--lamp-green); --lc: var(--lamp-green); }
+.wes-signal .wes-light { display: flex; align-items: center; gap: 14px; font-weight: 800; font-size: 16px; color: var(--lc); }
+.wes-signal .wes-light::before { content: ""; flex: none; width: 86px; height: 30px; border-radius: 15px;
+  background: radial-gradient(circle at 16px 15px, var(--l1) 8px, transparent 9px), radial-gradient(circle at 43px 15px, var(--l2) 8px, transparent 9px),
+              radial-gradient(circle at 70px 15px, var(--l3) 8px, transparent 9px), #090A0C;
+  box-shadow: 0 0 22px -6px var(--lc); }
+.wes-signal .wes-oneline { margin: 14px 0 0; font-size: 18px; line-height: 1.7; color: var(--white); }
+.wes-signal .wes-meta { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--edge); font-size: 12.5px; color: var(--text-3); }
+
+/* route line */
+.wes-chain { --route: #4A5058; list-style: none; padding: 4px 0 0; margin: 12px 0 22px; }
+.wes-chain.red { --route: var(--route-red); }
+.wes-chain.yellow { --route: var(--lamp-yellow); }
+.wes-chain.green { --route: var(--lamp-green); }
+.wes-chain li { position: relative; padding: 2px 0 22px 38px; margin: 0; border: 0; }
+.wes-chain li::before { content: ""; position: absolute; left: 4px; top: 7px; width: 10px; height: 10px; border-radius: 50%; background: var(--night); border: 3px solid var(--white); z-index: 1; }
+.wes-chain li::after { content: ""; position: absolute; left: 10px; top: 20px; bottom: -6px; width: 4px; border-radius: 2px; background: var(--route); }
+.wes-chain li:last-child { font-weight: 800; color: var(--white); padding-bottom: 4px; }
+.wes-chain li:last-child::after { display: none; }
+.wes-chain li:last-child::before { width: 16px; height: 16px; left: 2px; top: 4px; border: 0; background: var(--white); border-radius: 50% 50% 50% 0; transform: rotate(-45deg); }
+.wes-chain .wes-lag { display: inline-block; margin-left: 8px; padding: 1px 9px; border-radius: 999px; background: var(--panel-hi);
+  font-family: var(--num); font-weight: 600; font-size: 14px; color: var(--text-2); vertical-align: 1px; }
+
+/* destination: my wallet */
+.wes-wallet { margin: 18px 0; padding: 16px 20px; border-radius: 16px; line-height: 1.75; color: var(--white);
+  background: linear-gradient(135deg, var(--sign-green), var(--sign-green-lo)); box-shadow: 0 12px 30px -16px rgba(15,138,87,.8); }
+.wes-wallet b { display: inline-flex; align-items: center; gap: 8px; font-weight: 800; font-size: 15px; color: var(--white); }
+.wes-wallet b::before { content: ""; width: 22px; height: 22px; border-radius: 50%; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 20 L7 11 Q7 6 12 6 L16 6' fill='none' stroke='%23FFFFFF' stroke-width='2.6' stroke-linecap='round'/%3E%3Cpath d='M14 2.5 L19.5 6 L14 9.5 Z' fill='%23FFFFFF'/%3E%3C/svg%3E") no-repeat center / 13px 13px, rgba(255,255,255,.18); }
+.wes-wallet small { color: #CFEBDD; }
+
+/* recheck, evidence, paid data */
+.wes-recheck { margin: 0 0 20px; padding: 14px 18px; border-radius: 14px; font-size: 14px; color: var(--white); background: linear-gradient(135deg, #2A6FD6, var(--sign-blue)); }
+.wes-recheck a, .wes-recheck b { color: var(--white); }
+details.wes-evidence { margin: 30px 0; padding: 14px 18px; border-radius: 14px; background: var(--panel-lo); border: 1px solid var(--edge);
+  font-size: 13.5px; line-height: 1.75; color: var(--text-2); }
+details.wes-evidence summary { cursor: pointer; font-weight: 800; font-size: 15px; color: var(--white); }
+.wes-paid-line { display: block; margin-top: 12px; padding: 16px 14px 12px; border-radius: 10px; color: var(--text); background-color: var(--panel);
+  background-image: repeating-linear-gradient(135deg, var(--work) 0 8px, #0E1013 8px 16px); background-size: 100% 4px; background-repeat: no-repeat; }
+
+/* glossary popup */
+.wes-term { border-bottom: 1.5px dotted currentColor; cursor: help; }
+.wes-tip { position: absolute; z-index: 9999; max-width: 300px; padding: 14px 16px; border-radius: 12px; font-size: 14px; line-height: 1.6;
+  background: #262A30; color: var(--white); border: 1px solid rgba(255,255,255,.1); box-shadow: 0 16px 36px -12px rgba(0,0,0,.7); }
+.wes-tip .wes-tip-term { margin-bottom: 4px; font-weight: 800; font-size: 15px; color: var(--lane); }
+.wes-tip .wes-tip-ex { margin-top: 6px; font-size: 13px; color: var(--text-2); }
+.wes-tip a { display: inline-block; margin-top: 6px; color: var(--link); }
+
+/* ---------- mobile masthead ---------- */
+@media (max-width: 760px) {
+  #wes-signals .wes-mast { grid-template-columns: minmax(0, 1fr) auto; gap: 14px; }
+  #wes-signals .wes-next { grid-column: 1 / -1; grid-row: 2; }
+  #wes-signals .wes-brand b { font-size: 26px; }
+  #wes-signals .wes-logo { width: 40px; height: 40px; }
+  #wes-signals .wes-cnt span { padding: 4px 9px; font-size: 14px; }
+  #wes-signals .wes-next-t b { font-size: 17px; }
+  #wes-signals .wes-dday { font-size: 24px; }
+}
+
+/* ---------- desktop ---------- */
+@media (min-width: 900px) {
+  #wes-signals .wes-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+  #wes-signals .wes-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; }
+  .post-body { font-size: 17px; }
+  .wes-signal { padding: 24px 28px; }
+  .wes-signal .wes-oneline { font-size: 19px; }
+}

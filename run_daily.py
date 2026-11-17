@@ -23,6 +23,8 @@ def main():
         s["data_status"] = st.get(ind["id"], {}).get("status", "")
         if ind.get("note"):
             s["note"] = ind["note"]
+        if ind.get("dest"):
+            s["dest"], s["eta"] = ind["dest"], ind.get("eta", "")
         signals.append(s)
     signals.sort(key=lambda s: (ORDER.get(s["color"], 9), -s.get("percentile", 0)))
 
@@ -36,6 +38,8 @@ def main():
         "data_status": status,
         "rechecks_due": [r["signal_id"] for r in due],
         "paid_not_used": cfg.get("paid_not_used", []),
+        "track": cfg.get("track", {}),
+        "upcoming": sorted([u for u in cfg.get("upcoming", []) if u["date"] >= datetime.now(timezone.utc).date().isoformat()], key=lambda u: u["date"])[:3],
     })
 
     print(f"\n[신호 규칙 v{RULE_VERSION}] 결과")

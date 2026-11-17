@@ -13,7 +13,9 @@
       "method": "policy",
       "window": 30,
       "unit": "%",
-      "recheck_days": 45
+      "recheck_days": 45,
+      "dest": "대출·예금 금리",
+      "eta": "수개월"
     },
     {
       "id": "us_10y",
@@ -27,7 +29,9 @@
       "method": "diff",
       "window": 5,
       "unit": "%",
-      "recheck_days": 21
+      "recheck_days": 21,
+      "dest": "내 대출 금리",
+      "eta": "수개월"
     },
     {
       "id": "us_cpi",
@@ -41,7 +45,9 @@
       "method": "diff",
       "window": 1,
       "unit": "%",
-      "recheck_days": 45
+      "recheck_days": 45,
+      "dest": "장바구니 물가",
+      "eta": "수개월"
     },
     {
       "id": "kr_base_rate",
@@ -57,7 +63,9 @@
       "method": "policy",
       "window": 30,
       "unit": "%",
-      "recheck_days": 45
+      "recheck_days": 45,
+      "dest": "대출·예금 금리",
+      "eta": "수주"
     },
     {
       "id": "kr_cpi",
@@ -73,7 +81,9 @@
       "method": "diff",
       "window": 1,
       "unit": "%",
-      "recheck_days": 45
+      "recheck_days": 45,
+      "dest": "장바구니",
+      "eta": "바로"
     },
     {
       "id": "usdkrw",
@@ -89,7 +99,9 @@
       "method": "pct",
       "window": 5,
       "unit": "원",
-      "recheck_days": 21
+      "recheck_days": 21,
+      "dest": "직구·해외여행",
+      "eta": "바로"
     },
     {
       "id": "kospi",
@@ -105,7 +117,9 @@
       "method": "pct",
       "window": 5,
       "unit": "pt",
-      "recheck_days": 21
+      "recheck_days": 21,
+      "dest": "국내 주식·ETF",
+      "eta": "바로"
     },
     {
       "id": "sp500",
@@ -121,7 +135,9 @@
       "unit": "pt",
       "recheck_days": 21,
       "note": "FRED가 S&P 500을 최근 1년치만 제공해, 지난 10년이 아니라 받을 수 있는 기간과 비교합니다. 재게시 제한이 있어 분석용으로만 사용하고 화면 시세는 위젯으로 표시합니다.",
-      "min_history": 120
+      "min_history": 120,
+      "dest": "해외 주식·연금",
+      "eta": "바로"
     },
     {
       "id": "wti",
@@ -135,7 +151,9 @@
       "method": "pct",
       "window": 5,
       "unit": "달러/배럴",
-      "recheck_days": 21
+      "recheck_days": 21,
+      "dest": "주유비",
+      "eta": "2~3주"
     },
     {
       "id": "copper",
@@ -150,7 +168,9 @@
       "window": 1,
       "unit": "달러/톤",
       "recheck_days": 45,
-      "max_age_days": 110
+      "max_age_days": 110,
+      "dest": "전기·건설 자재값",
+      "eta": "수개월"
     },
     {
       "id": "btc",
@@ -164,7 +184,9 @@
       "method": "pct",
       "window": 5,
       "unit": "달러",
-      "recheck_days": 21
+      "recheck_days": 21,
+      "dest": "코인 계좌",
+      "eta": "바로"
     }
   ],
   "pending": [
@@ -248,5 +270,23 @@
       "better_source": "LBMA 금 가격 라이선스 또는 이를 재배포하는 유료 데이터 업체",
       "gain": "안전자산 흐름을 신호등·지나온 길 비교에 포함"
     }
-  ]
+  ],
+  "upcoming": [
+    {
+      "date": "2026-12-09",
+      "name": "FOMC 금리 결정",
+      "note": "미국 기준금리 발표"
+    },
+    {
+      "date": "2026-12-10",
+      "name": "미국 11월 CPI",
+      "note": "금리 결정 다음 날"
+    }
+  ],
+  "track": {
+    "registered": 1,
+    "scored": 0,
+    "hits": 0,
+    "next_check": "2026-12-17"
+  }
 }

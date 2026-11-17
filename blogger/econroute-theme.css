@@ -1,0 +1,32 @@
+/* 경제 내비 테마 — Contempo 기본 모양을 시안 디자인으로 덮어쓰기
+   Blogger 테마 → 맞춤설정 → Advanced → Add CSS 칸에서 wes.css 아래에 이어 붙이기 */
+
+/* 바탕: 사진 대신 시안의 연한 회색 */
+body { background: #F6F5F2 !important; }
+.bg-photo-container, .bg-photo-overlay, .bg-photo { display: none !important; }
+
+/* 헤더: 흰 바탕 + 진한 글자 + 로고 */
+.centered-top-container, .centered-top-container.sticky { background: #FFFFFF !important; border-bottom: 1px solid #E2E0DA; box-shadow: none !important; }
+.centered-top, .centered-top-firstline { background: transparent !important; }
+.Header h1, .Header h1 a, .Header .title, .Header .title a, .blog-name a { color: #16181D !important; font-weight: 700; letter-spacing: -0.5px; }
+.Header h1 a::before, .Header .title a::before { content: ""; display: inline-block; width: 1.1em; height: 1.1em; margin-right: .35em; vertical-align: -0.15em;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='11' fill='%2316181D'/%3E%3Cpath d='M9 31 C 9 20, 31 22, 31 10' fill='none' stroke='%23FFFFFF' stroke-width='2' stroke-dasharray='3 3' stroke-linecap='round'/%3E%3Ccircle cx='9' cy='31' r='3.2' fill='%2330A46C'/%3E%3Ccircle cx='20' cy='20.9' r='3.2' fill='%23F5B83D'/%3E%3Ccircle cx='31' cy='10' r='3.2' fill='%23E5484D'/%3E%3C/svg%3E") no-repeat center / contain; }
+.Header .description, .Header p.description { color: #5E636E !important; font-size: 15px; }
+.svg-icon-24, .centered-top .svg-icon-24, .hamburger-menu .svg-icon-24 { fill: #16181D !important; }
+.search input { color: #16181D !important; }
+
+/* 본문 가젯 제목 (예: 오늘의 신호등) */
+.page_body .widget h3.title, .page_body .widget .title { color: #16181D !important; font-size: 22px; font-weight: 700; letter-spacing: -0.3px; opacity: 1 !important; }
+
+/* 글 상자: 흰 카드, 둥근 모서리, 그림자 없음 */
+.post-outer-container, .post-outer, .Blog .post-outer-container { background: #FFFFFF !important; border: 1px solid #E2E0DA; border-radius: 16px !important; box-shadow: none !important; }
+.post-title, .post-title a, h3.post-title a { color: #16181D !important; font-weight: 700; letter-spacing: -0.3px; }
+.post-body { color: #16181D; line-height: 1.75; font-size: 16px; }
+.byline, .post-header .byline, .post-footer .byline { color: #5E636E !important; }
+
+/* 사이드바(☰ 메뉴) */
+.sidebar-container { background: #FFFFFF !important; }
+.sidebar-container .widget .title { color: #16181D !important; }
+
+/* 링크 */
+a, .post-body a { color: #17345F; }
