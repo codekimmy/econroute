@@ -35,6 +35,7 @@ def main():
         "signals": signals,
         "data_status": status,
         "rechecks_due": [r["signal_id"] for r in due],
+        "paid_not_used": cfg.get("paid_not_used", []),
     })
 
     print(f"\n[신호 규칙 v{RULE_VERSION}] 결과")
@@ -43,6 +44,9 @@ def main():
     print("\n[데이터 상태]")
     for s in status:
         print(f"  {s['status']:<5} {s['name']:<16} {s.get('last_date', '')} {s.get('message', '')}")
+    print("\n[유료라 쓰지 않은 자료 — 독자에게 공개]")
+    for p in cfg.get("paid_not_used", []):
+        print(f"  {p['name']}: 대신 {p['substitute']} / 더 정확하려면 {p['better_source']}")
     print(f"\n장부 신규 기록 {added}건 · 재확인 기한 도래 {len(due)}건 · 결과: data/latest.json")
 
 

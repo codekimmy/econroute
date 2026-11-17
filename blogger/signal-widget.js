@@ -31,6 +31,23 @@
     box.appendChild(el("div", "wes-foot",
       "신호 규칙 v" + data.rule_version + " · 갱신 " + t.toLocaleString("ko-KR") +
       " · 색은 좋고 나쁨이 아니라 '평소와 얼마나 다른 움직임인가'를 뜻합니다."));
+    var paid = data.paid_not_used || [];
+    if (paid.length) {
+      // 유료라 쓰지 않은 자료를 독자에게 항상 공개
+      var d = document.createElement("details");
+      d.className = "wes-paid";
+      d.appendChild(el("summary", null, "유료라 쓰지 않은 자료 " + paid.length + "건 — 이 신호등의 한계와 더 정확해지는 방법"));
+      var ul = el("ul");
+      paid.forEach(function (p) {
+        var li = el("li");
+        li.appendChild(el("b", null, p.name));
+        li.appendChild(el("span", null, " · 대신: " + p.substitute + " · 영향: " + p.impact));
+        if (p.better_source) li.appendChild(el("div", "wes-paid-up", "더 정확해지려면: " + p.better_source + " → " + p.gain));
+        ul.appendChild(li);
+      });
+      d.appendChild(ul);
+      box.appendChild(d);
+    }
   }
 
   function start() {

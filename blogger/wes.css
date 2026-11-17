@@ -67,3 +67,11 @@ details.wes-evidence summary { cursor: pointer; font-weight: 600; color: var(--w
 .wes-card .wes-card-reason { margin-top: 4px; font-size: .92em; }
 .wes-card .wes-card-meta { margin-top: 4px; font-size: .8em; color: var(--wes-quiet); }
 .wes-foot { font-size: .8em; color: var(--wes-quiet); }
+
+/* 유료라 쓰지 않은 자료 공개 */
+details.wes-paid { margin-top: 8px; font-size: .82em; color: var(--wes-quiet); }
+details.wes-paid summary { cursor: pointer; font-weight: 600; color: var(--wes-ink); }
+details.wes-paid ul { margin: 6px 0 0; padding-left: 18px; }
+details.wes-paid li { margin: 4px 0; line-height: 1.5; }
+.wes-paid-line { display: block; margin-top: 6px; padding: 8px 10px; background: #fff6dd; border-radius: 8px; color: var(--wes-ink); }
+.wes-paid-up { margin-top: 2px; color: #17345F; }
