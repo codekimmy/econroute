@@ -1,11 +1,12 @@
-/* ECON ROUTE - night-drive home dashboard (masthead + today's signals + caution + track record)
-   Blogger Layout - Page Body - Add a Gadget - HTML/JavaScript (leave the gadget title EMPTY):
+/* ECON ROUTE - morning-paper home (masthead + today's signals + top route + caution + track record)
+   Blogger Layout - Page Body - HTML/JavaScript gadget (leave the gadget title EMPTY):
      div id="wes-signals" + script src=".../blogger/signal-widget.js" */
 (function () {
   var WES_DATA_URL = "https://codekimmy.github.io/econroute/data/latest.json";
+  var FEED_URL = "/feeds/posts/default?alt=json&max-results=1";
   var SHOW = 3;
   var CLS = { "초록": "green", "노랑": "yellow", "빨강": "red", "보류": "hold" };
-  var DAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+  var DAYS = ["일", "월", "화", "수", "목", "금", "토"];
 
   function el(tag, cls, text) {
     var e = document.createElement(tag);
@@ -28,109 +29,155 @@
     if (c === 0) return "변화 없음";
     return (c > 0 ? "+" : "−") + Math.abs(c).toFixed(2) + (s.change_unit || "");
   }
-  function dday(iso, now) {
-    var a = Date.UTC(+iso.slice(0, 4), +iso.slice(5, 7) - 1, +iso.slice(8, 10));
-    var k = kst(now), b = Date.UTC(k.getUTCFullYear(), k.getUTCMonth(), k.getUTCDate());
-    var n = Math.round((a - b) / 864e5);
-    return n === 0 ? "D-DAY" : "D-" + n;
-  }
+  function dayNum(iso) { return Date.UTC(+iso.slice(0, 4), +iso.slice(5, 7) - 1, +iso.slice(8, 10)) / 864e5; }
+  function todayNum(now) { var k = kst(now); return Date.UTC(k.getUTCFullYear(), k.getUTCMonth(), k.getUTCDate()) / 864e5; }
+  function dday(iso, now) { var n = Math.round(dayNum(iso) - todayNum(now)); return n === 0 ? "D-DAY" : "D-" + n; }
   function mmdd(iso) { return iso.slice(5, 7) + "." + iso.slice(8, 10); }
+  function korDate(iso) { return (+iso.slice(5, 7)) + "월 " + (+iso.slice(8, 10)) + "일"; }
 
-  function masthead(data, now) {
-    var m = el("div", "wes-mast");
-    var brand = el("a", "wes-brand"); brand.href = "/";
-    brand.appendChild(el("span", "wes-logo"));
-    var bt = el("span"); bt.appendChild(el("b", null, "경제 내비")); bt.appendChild(el("small", null, "ECON ROUTE"));
-    brand.appendChild(bt); m.appendChild(brand);
+  function lights(color) {
+    var l = el("span", "wes-tl " + color); l.setAttribute("aria-hidden", "true");
+    l.appendChild(el("i")); l.appendChild(el("i")); l.appendChild(el("i"));
+    return l;
+  }
 
-    var up = (data.upcoming || [])[0];
-    var next = el("div", "wes-next");
-    next.appendChild(el("span", "wes-turn"));
-    var nt = el("span", "wes-next-t");
-    nt.appendChild(el("small", null, "다음 안내"));
-    nt.appendChild(el("b", null, up ? mmdd(up.date) + " " + up.name : "예정된 주요 일정 없음"));
-    next.appendChild(nt);
-    if (up) next.appendChild(el("span", "wes-dday", dday(up.date, now)));
-    m.appendChild(next);
+  function masthead(box, data, now) {
+    var k = kst(now), g = kst(new Date(data.generated_at));
+    var top = el("div", "wes-topbar");
+    top.appendChild(el("span", null, k.getUTCFullYear() + "년 " + (k.getUTCMonth() + 1) + "월 " + k.getUTCDate() + "일 " + DAYS[k.getUTCDay()] + "요일"));
+    top.appendChild(el("span", "wes-tagline", "세계경제에서 내 지갑까지, 길 안내"));
+    top.appendChild(el("span", null, pad(g.getUTCHours()) + ":" + pad(g.getUTCMinutes()) + " 경로 갱신"));
+    box.appendChild(top);
 
     var cnt = { "빨강": 0, "노랑": 0, "초록": 0 };
     data.signals.forEach(function (s) { if (cnt[s.color] != null) cnt[s.color]++; });
-    var st = el("div", "wes-stat");
+
+    var m = el("div", "wes-mast");
+    var l = el("div", "wes-mast-l");
+    l.appendChild(el("b", null, "오늘의 교통 상황"));
+    l.appendChild(el("span", null, "신호 " + data.signals.length + "개 중 " + (cnt["빨강"] + cnt["노랑"]) + "개 점등"));
+    l.appendChild(el("span", null, "신호 규칙 v" + data.rule_version));
+    var t = el("a", "wes-title"); t.href = "/";
+    t.appendChild(el("span", "wes-kicker", "ECON ROUTE"));
+    t.appendChild(el("span", "wes-name", "경제 내비"));
+    var r = el("div", "wes-mast-r");
     var row = el("div", "wes-cnt");
     [["빨강", "red"], ["노랑", "yellow"], ["초록", "green"]].forEach(function (p) {
       var c = el("span", "wes-cnt-" + p[1]); c.title = p[0] + " 신호";
       c.appendChild(el("i")); c.appendChild(document.createTextNode(String(cnt[p[0]])));
       row.appendChild(c);
     });
-    st.appendChild(row);
-    var g = kst(new Date(data.generated_at));
-    st.appendChild(el("small", null, pad(g.getUTCMonth() + 1) + "." + pad(g.getUTCDate()) + " " + DAYS[g.getUTCDay()] + " " +
-      pad(g.getUTCHours()) + ":" + pad(g.getUTCMinutes()) + " 갱신"));
-    m.appendChild(st);
-    return m;
+    r.appendChild(row);
+    r.appendChild(el("small", null, "빨강 · 노랑 · 초록"));
+    m.appendChild(l); m.appendChild(t); m.appendChild(r);
+    box.appendChild(m);
+
+    var ups = data.upcoming || [];
+    var nx = el("div", "wes-next");
+    nx.appendChild(el("span", "wes-turn"));
+    var txt = el("span", "wes-next-t");
+    txt.appendChild(el("small", null, "다음 안내"));
+    if (ups.length) {
+      txt.appendChild(el("b", null, korDate(ups[0].date) + " " + ups[0].name));
+      if (ups[1]) {
+        var gap = Math.round(dayNum(ups[1].date) - dayNum(ups[0].date));
+        txt.appendChild(el("span", "wes-next-2", " · " + (gap === 1 ? "다음 날 " : korDate(ups[1].date) + " ") + ups[1].name));
+      }
+    } else txt.appendChild(el("b", null, "예정된 주요 일정 없음"));
+    nx.appendChild(txt);
+    if (ups.length) nx.appendChild(el("em", null, dday(ups[0].date, now)));
+    box.appendChild(nx);
   }
 
   function card(s) {
-    var c = el("div", "wes-card " + (CLS[s.color] || "hold"));
+    var color = CLS[s.color] || "hold";
+    var c = el("div", "wes-card " + color);
     var top = el("div", "wes-card-top");
-    var lamps = el("span", "wes-lamps"); lamps.setAttribute("aria-hidden", "true");
-    lamps.appendChild(el("i")); lamps.appendChild(el("i")); lamps.appendChild(el("i"));
-    var titles = el("span", "wes-card-titles");
-    titles.appendChild(el("span", "wes-card-word", s.color + " 신호"));
-    titles.appendChild(el("span", "wes-card-name", s.name));
-    top.appendChild(lamps); top.appendChild(titles);
+    top.appendChild(lights(color));
+    top.appendChild(el("span", "wes-card-word", s.color + " 신호"));
     c.appendChild(top);
+    c.appendChild(el("div", "wes-card-name", s.name));
     var num = el("div", "wes-card-num");
     num.appendChild(el("b", null, fmtValue(s)));
     num.appendChild(el("small", null, fmtChange(s)));
     c.appendChild(num);
     c.appendChild(el("div", "wes-card-reason", s.reason || ""));
     if (s.data_note) c.appendChild(el("div", "wes-card-meta", "※ " + s.data_note));
-    if (s.dest) {
-      var sign = el("div", "wes-sign");
-      sign.appendChild(el("span", null, "↗ 도착지 · " + s.dest));
-      sign.appendChild(el("b", null, s.eta || ""));
-      c.appendChild(sign);
-    }
+    if (s.dest) c.appendChild(el("span", "wes-sign", "도착지 · " + s.dest + (s.eta ? " · " + s.eta : "")));
     c.appendChild(el("div", "wes-card-meta", "기준일 " + (s.date || "-") + " · 데이터 " + (s.data_status || "-")));
     return c;
   }
 
-  function sectionTitle(text) {
-    var h = el("div", "wes-h"); h.appendChild(el("span", "wes-h-badge")); h.appendChild(el("span", null, text));
+  function section(text, sub) {
+    var h = el("div", "wes-sec"); h.appendChild(el("span", "wes-sec-t", text));
+    if (sub) h.appendChild(el("span", "wes-sec-s", sub));
     return h;
   }
 
-  function lower(data, now) {
-    var row = el("div", "wes-row");
-    var ev = el("div", "wes-panel");
-    var eh = el("div", "wes-panel-h"); eh.appendChild(el("span", "wes-warn")); eh.appendChild(el("span", null, "전방 주의 구간"));
-    ev.appendChild(eh);
+  // top story: newest post, its route line read from the post's .wes-chain (text only)
+  function topStory(holder) {
+    if (!window.fetch || !window.DOMParser) return;
+    fetch(FEED_URL).then(function (r) { return r.json(); }).then(function (f) {
+      var e = f.feed && f.feed.entry && f.feed.entry[0];
+      if (!e) return;
+      var link = "/";
+      (e.link || []).forEach(function (x) { if (x.rel === "alternate") link = x.href; });
+      var total = +((f.feed.openSearch$totalResults || {}).$t || 1);
+      var doc = new DOMParser().parseFromString((e.content || e.summary || {}).$t || "", "text/html");
+      var p = el("a", "wes-story"); p.href = link;
+      var no = String(total); while (no.length < 3) no = "0" + no;
+      p.appendChild(el("span", "wes-story-k", "ROUTE " + no + " · 경로 안내"));
+      p.appendChild(el("span", "wes-story-h", (e.title.$t || "").split(" — ")[0]));
+      var chain = doc.querySelector(".wes-chain");
+      if (chain) {
+        var color = /\b(red|yellow|green)\b/.exec(chain.className); color = color ? color[1] : "ink";
+        var items = [].slice.call(chain.querySelectorAll("li")).map(function (li) {
+          var c = li.cloneNode(true);
+          [].forEach.call(c.querySelectorAll(".wes-lag"), function (x) { x.parentNode.removeChild(x); });
+          return c.textContent.replace(/\s+/g, " ").trim().replace(/^(출발|경유|도착)\s*·\s*/, "");
+        });
+        var route = el("span", "wes-route " + color);
+        items.forEach(function (_, i) {
+          route.appendChild(el("i", i === items.length - 1 ? "pin" : "n"));
+          if (i < items.length - 1) route.appendChild(el("b"));
+        });
+        p.appendChild(route);
+        var labels = el("span", "wes-route-l");
+        labels.style.gridTemplateColumns = "repeat(" + items.length + ", minmax(0, 1fr))";
+        items.forEach(function (t) { labels.appendChild(el("span", null, t)); });
+        p.appendChild(labels);
+      }
+      var lede = doc.querySelector(".wes-oneline");
+      if (lede) p.appendChild(el("span", "wes-story-lede", lede.textContent.replace(/\s+/g, " ").trim()));
+      p.appendChild(el("span", "wes-story-go", "경로 안내 시작"));
+      holder.appendChild(p);
+      holder.parentNode.classList.add("has-story");
+    }).catch(function () {});
+  }
+
+  function side(data, now) {
+    var s = el("div", "wes-side");
+    s.appendChild(el("div", "wes-side-h", "전방 주의 구간"));
     var ups = data.upcoming || [];
-    if (!ups.length) ev.appendChild(el("div", "wes-ev-empty", "예정된 주요 일정이 없습니다."));
+    if (!ups.length) s.appendChild(el("div", "wes-note", "예정된 주요 일정이 없습니다."));
     ups.forEach(function (u) {
       var r = el("div", "wes-ev");
       r.appendChild(el("b", null, mmdd(u.date)));
       r.appendChild(el("span", null, u.name));
       r.appendChild(el("em", null, dday(u.date, now)));
-      ev.appendChild(r);
+      s.appendChild(r);
     });
-    row.appendChild(ev);
-
     var t = data.track || {};
-    var tr = el("div", "wes-panel");
-    var th = el("div", "wes-panel-h"); th.appendChild(el("span", null, "운행 기록"));
-    tr.appendChild(th);
+    s.appendChild(el("div", "wes-side-h wes-gap", "운행 기록"));
     var odo = el("div", "wes-odo"); odo.setAttribute("aria-hidden", "true");
     var digits = String(t.registered || 0); while (digits.length < 3) digits = "0" + digits;
-    digits.split("").forEach(function (d, i) { odo.appendChild(el("span", i === digits.length - 1 ? "on" : null, d)); });
-    tr.appendChild(odo);
+    digits.split("").forEach(function (d) { odo.appendChild(el("span", null, d)); });
+    s.appendChild(odo);
     var line = "등록 전망 " + (t.registered || 0) + "건";
     if (t.scored) line += " · 채점 " + t.scored + "건 중 " + (t.hits || 0) + "건 적중";
-    if (t.next_check) line += " · 다음 채점 " + mmdd(t.next_check);
-    tr.appendChild(el("div", "wes-panel-note", line));
-    row.appendChild(tr);
-    return row;
+    if (t.next_check) line += " · " + (t.scored ? "다음" : "첫") + " 채점 " + korDate(t.next_check);
+    s.appendChild(el("div", "wes-note", line));
+    return s;
   }
 
   function paidBox(paid) {
@@ -151,16 +198,19 @@
   function render(box, data) {
     var now = new Date();
     box.innerHTML = "";
-    box.appendChild(masthead(data, now));
-    box.appendChild(el("div", "wes-lane"));
-    box.appendChild(sectionTitle("오늘의 신호등"));
+    masthead(box, data, now);
+    box.appendChild(section("오늘의 신호등", "평소와 얼마나 다른 움직임인가"));
     var wrap = el("div", "wes-cards");
     data.signals.slice(0, SHOW).forEach(function (s) { wrap.appendChild(card(s)); });
     box.appendChild(wrap);
-    box.appendChild(el("div", "wes-foot", "신호 규칙 v" + data.rule_version +
-      " · 색은 좋고 나쁨이 아니라 평소와 얼마나 다른 움직임인지를 뜻합니다."));
-    box.appendChild(lower(data, now));
+    box.appendChild(el("div", "wes-foot", "색은 좋고 나쁨이 아니라 평소와 얼마나 다른 움직임인지를 뜻합니다."));
+    var row = el("div", "wes-row");
+    var story = el("div", "wes-story-box");
+    row.appendChild(story);
+    row.appendChild(side(data, now));
+    box.appendChild(row);
     if ((data.paid_not_used || []).length) box.appendChild(paidBox(data.paid_not_used));
+    topStory(story);
   }
 
   function start() {
