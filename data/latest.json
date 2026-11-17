@@ -1,91 +1,266 @@
 {
-  "generated_at": "2026-11-17T05:28:17+00:00",
+  "generated_at": "2026-11-17T06:10:07+00:00",
   "rule_version": "1.0",
-  "signals": [],
-  "data_status": [
-    {
-      "id": "us_policy_rate",
-      "name": "미국 기준금리(상단)",
-      "fetched_at": "2026-11-17T05:28:17+00:00",
-      "status": "키 없음",
-      "message": "FRED_API_KEY 미설정"
-    },
+  "signals": [
     {
       "id": "us_10y",
       "name": "미국 10년물 국채금리",
-      "fetched_at": "2026-11-17T05:28:17+00:00",
-      "status": "키 없음",
-      "message": "FRED_API_KEY 미설정"
-    },
-    {
-      "id": "us_cpi",
-      "name": "미국 소비자물가(전년비)",
-      "fetched_at": "2026-11-17T05:28:17+00:00",
-      "status": "키 없음",
-      "message": "FRED_API_KEY 미설정"
-    },
-    {
-      "id": "kr_base_rate",
-      "name": "한국 기준금리",
-      "fetched_at": "2026-11-17T05:28:17+00:00",
-      "status": "키 없음",
-      "message": "ECOS_API_KEY 미설정"
-    },
-    {
-      "id": "kr_cpi",
-      "name": "한국 소비자물가(전년비)",
-      "fetched_at": "2026-11-17T05:28:17+00:00",
-      "status": "키 없음",
-      "message": "ECOS_API_KEY 미설정"
-    },
-    {
-      "id": "usdkrw",
-      "name": "원/달러 환율",
-      "fetched_at": "2026-11-17T05:28:17+00:00",
-      "status": "키 없음",
-      "message": "ECOS_API_KEY 미설정"
-    },
-    {
-      "id": "kospi",
-      "name": "코스피",
-      "fetched_at": "2026-11-17T05:28:17+00:00",
-      "status": "키 없음",
-      "message": "ECOS_API_KEY 미설정"
-    },
-    {
-      "id": "sp500",
-      "name": "S&P 500",
-      "fetched_at": "2026-11-17T05:28:17+00:00",
-      "status": "키 없음",
-      "message": "FRED_API_KEY 미설정"
-    },
-    {
-      "id": "wti",
-      "name": "WTI 원유",
-      "fetched_at": "2026-11-17T05:28:17+00:00",
-      "status": "키 없음",
-      "message": "FRED_API_KEY 미설정"
-    },
-    {
-      "id": "copper",
-      "name": "구리(월평균)",
-      "fetched_at": "2026-11-17T05:28:17+00:00",
-      "status": "키 없음",
-      "message": "FRED_API_KEY 미설정"
+      "rule_version": "1.0",
+      "date": "2026-11-13",
+      "value": 5.15,
+      "unit": "%",
+      "change": 0.31,
+      "change_unit": "%p",
+      "direction": "상승",
+      "percentile": 98.5,
+      "color": "빨강",
+      "reason": "최근 5거래일 변동 +0.31%p — 지난 10년 같은 기간 움직임 중 상위 1% 크기",
+      "data_status": "정상"
     },
     {
       "id": "btc",
       "name": "비트코인",
-      "fetched_at": "2026-11-17T05:28:17+00:00",
-      "status": "키 없음",
-      "message": "FRED_API_KEY 미설정"
+      "rule_version": "1.0",
+      "date": "2026-11-16",
+      "value": 64537.93,
+      "unit": "달러",
+      "change": -12.5231,
+      "change_unit": "%",
+      "direction": "하락",
+      "percentile": 88.8,
+      "color": "노랑",
+      "reason": "최근 5거래일 변동 -12.52% — 지난 10년 같은 기간 움직임 중 상위 11% 크기",
+      "data_status": "정상"
+    },
+    {
+      "id": "usdkrw",
+      "name": "원/달러 환율",
+      "rule_version": "1.0",
+      "date": "2026-11-17",
+      "value": 1335.0,
+      "unit": "원",
+      "change": -1.5269,
+      "change_unit": "%",
+      "direction": "하락",
+      "percentile": 83.4,
+      "color": "노랑",
+      "reason": "최근 5거래일 변동 -1.53% — 지난 10년 같은 기간 움직임 중 상위 17% 크기",
+      "data_status": "정상"
+    },
+    {
+      "id": "us_cpi",
+      "name": "미국 소비자물가(전년비)",
+      "rule_version": "1.0",
+      "date": "2026-09-01",
+      "value": 3.7173,
+      "unit": "%",
+      "change": 0.3642,
+      "change_unit": "%p",
+      "direction": "상승",
+      "percentile": 71.6,
+      "color": "초록",
+      "reason": "최근 1개월 전년비 상승률 변화 +0.36%p — 평소 범위의 움직임",
+      "data_status": "정상"
+    },
+    {
+      "id": "kospi",
+      "name": "코스피",
+      "rule_version": "1.0",
+      "date": "2026-11-16",
+      "value": 5100.5,
+      "unit": "pt",
+      "change": 1.6269,
+      "change_unit": "%",
+      "direction": "상승",
+      "percentile": 51.0,
+      "color": "초록",
+      "reason": "최근 5거래일 변동 +1.63% — 평소 범위의 움직임",
+      "data_status": "정상"
+    },
+    {
+      "id": "wti",
+      "name": "WTI 원유",
+      "rule_version": "1.0",
+      "date": "2026-11-11",
+      "value": 89.62,
+      "unit": "달러/배럴",
+      "change": -2.3002,
+      "change_unit": "%",
+      "direction": "하락",
+      "percentile": 38.7,
+      "color": "초록",
+      "reason": "최근 5거래일 변동 -2.30% — 평소 범위의 움직임",
+      "data_status": "정상"
+    },
+    {
+      "id": "copper",
+      "name": "구리(월평균)",
+      "rule_version": "1.0",
+      "date": "2026-09-01",
+      "value": 14473.0559,
+      "unit": "달러/톤",
+      "change": 0.9894,
+      "change_unit": "%",
+      "direction": "상승",
+      "percentile": 23.7,
+      "color": "초록",
+      "reason": "최근 1개월 변동 +0.99% — 평소 범위의 움직임",
+      "data_status": "지연"
+    },
+    {
+      "id": "kr_cpi",
+      "name": "한국 소비자물가(전년비)",
+      "rule_version": "1.0",
+      "date": "2026-10-01",
+      "value": 2.8189,
+      "unit": "%",
+      "change": -0.0599,
+      "change_unit": "%p",
+      "direction": "하락",
+      "percentile": 13.6,
+      "color": "초록",
+      "reason": "최근 1개월 전년비 상승률 변화 -0.06%p — 평소 범위의 움직임",
+      "data_status": "정상"
+    },
+    {
+      "id": "us_policy_rate",
+      "name": "미국 기준금리(상단)",
+      "rule_version": "1.0",
+      "date": "2026-11-16",
+      "value": 4.0,
+      "unit": "%",
+      "change": 0.0,
+      "change_unit": "%p",
+      "color": "초록",
+      "direction": "변화 없음",
+      "reason": "최근 변경 없음",
+      "data_status": "정상"
+    },
+    {
+      "id": "kr_base_rate",
+      "name": "한국 기준금리",
+      "rule_version": "1.0",
+      "date": "2026-11-14",
+      "value": 3.0,
+      "unit": "%",
+      "change": 0.0,
+      "change_unit": "%p",
+      "color": "초록",
+      "direction": "변화 없음",
+      "reason": "최근 변경 없음",
+      "data_status": "정상"
+    },
+    {
+      "id": "sp500",
+      "name": "S&P 500",
+      "rule_version": "1.0",
+      "date": "2026-11-16",
+      "value": 7416.59,
+      "unit": "pt",
+      "change": -1.7662,
+      "change_unit": "%",
+      "direction": "하락",
+      "color": "보류",
+      "reason": "비교할 과거 이력 245개로 부족(필요 250개) — 판정 보류",
+      "data_status": "정상",
+      "note": "FRED 제공분은 최근 10년치이며 재게시 제한이 있어 분석용으로만 사용. 화면 시세는 위젯."
+    }
+  ],
+  "data_status": [
+    {
+      "id": "us_policy_rate",
+      "name": "미국 기준금리(상단)",
+      "fetched_at": "2026-11-17T06:09:52+00:00",
+      "revisions": 0,
+      "last_date": "2026-11-16",
+      "status": "정상"
+    },
+    {
+      "id": "us_10y",
+      "name": "미국 10년물 국채금리",
+      "fetched_at": "2026-11-17T06:09:52+00:00",
+      "revisions": 0,
+      "last_date": "2026-11-13",
+      "status": "정상"
+    },
+    {
+      "id": "us_cpi",
+      "name": "미국 소비자물가(전년비)",
+      "fetched_at": "2026-11-17T06:09:53+00:00",
+      "revisions": 0,
+      "last_date": "2026-10-01",
+      "status": "정상"
+    },
+    {
+      "id": "kr_base_rate",
+      "name": "한국 기준금리",
+      "fetched_at": "2026-11-17T06:09:53+00:00",
+      "revisions": 0,
+      "last_date": "2026-11-14",
+      "status": "정상"
+    },
+    {
+      "id": "kr_cpi",
+      "name": "한국 소비자물가(전년비)",
+      "fetched_at": "2026-11-17T06:09:57+00:00",
+      "revisions": 0,
+      "last_date": "2026-10-01",
+      "status": "정상"
+    },
+    {
+      "id": "usdkrw",
+      "name": "원/달러 환율",
+      "fetched_at": "2026-11-17T06:09:59+00:00",
+      "revisions": 0,
+      "last_date": "2026-11-17",
+      "status": "정상"
+    },
+    {
+      "id": "kospi",
+      "name": "코스피",
+      "fetched_at": "2026-11-17T06:10:02+00:00",
+      "revisions": 0,
+      "last_date": "2026-11-16",
+      "status": "정상"
+    },
+    {
+      "id": "sp500",
+      "name": "S&P 500",
+      "fetched_at": "2026-11-17T06:10:06+00:00",
+      "revisions": 0,
+      "last_date": "2026-11-16",
+      "status": "정상"
+    },
+    {
+      "id": "wti",
+      "name": "WTI 원유",
+      "fetched_at": "2026-11-17T06:10:06+00:00",
+      "revisions": 0,
+      "last_date": "2026-11-11",
+      "status": "정상"
+    },
+    {
+      "id": "copper",
+      "name": "구리(월평균)",
+      "fetched_at": "2026-11-17T06:10:06+00:00",
+      "revisions": 0,
+      "last_date": "2026-09-01",
+      "status": "지연",
+      "message": "마지막 관측 77일 전"
+    },
+    {
+      "id": "btc",
+      "name": "비트코인",
+      "fetched_at": "2026-11-17T06:10:06+00:00",
+      "revisions": 0,
+      "last_date": "2026-11-16",
+      "status": "정상"
     },
     {
       "id": "kr_gasoline",
-      "name": "국내 휘발유 평균가",
-      "fetched_at": "2026-11-17T05:28:17+00:00",
-      "status": "키 없음",
-      "message": "OPINET_API_KEY 미설정"
+      "name": "국내 휘발유 가격",
+      "status": "확보 전",
+      "message": "오피넷 API는 개인에게 유료라 제외. 한국은행 ECOS의 휘발유 소비자물가지수(월간)로 대체 예정."
     },
     {
       "id": "gold",
@@ -100,5 +275,67 @@
       "message": "관세청 무역통계 API 연동 예정(2단계). 그 전까지는 월 1회 수동 입력."
     }
   ],
-  "rechecks_due": []
+  "rechecks_due": [],
+  "paid_not_used": [
+    {
+      "id": "opinet_daily",
+      "priority": 2,
+      "name": "국내 주유소 일간 판매가격",
+      "why": "개인 이용은 유료(무료는 공공기관·소상공인·창업기업 제휴)",
+      "substitute": "국제유가(WTI)·환율로 계산한 가격 압력 + 휘발유 소비자물가지수(월간, 예정)",
+      "impact": "국내 주유소 가격의 최근 2~3주 움직임은 늦게 반영되거나 추정치로 표시됩니다.",
+      "better_source": "오피넷 유가정보 API (한국석유공사)",
+      "gain": "주유비 '도착 예정' 시차를 실제 가격으로 검증, 휘발유를 일간 신호등에 다시 포함"
+    },
+    {
+      "id": "macro_consensus",
+      "priority": 1,
+      "name": "경제지표 시장 예상치(컨센서스)",
+      "why": "유료 단말·뉴스 서비스 구독 필요",
+      "substitute": "중앙은행·IMF 공식 전망, 시장 금리에 반영된 기대",
+      "impact": "'예상보다 높았다/낮았다' 판단이 실무에서 쓰는 예상치와 다를 수 있습니다.",
+      "better_source": "블룸버그·LSEG(Refinitiv) 등 금융 단말, 국내는 연합인포맥스 등 금융 정보 서비스",
+      "gain": "발표 당일 '서프라이즈' 크기를 기관과 같은 기준으로 계산, 전방 주의 구간 정확도 향상"
+    },
+    {
+      "id": "earnings_consensus",
+      "priority": 3,
+      "name": "기업 실적 예상치",
+      "why": "유료 데이터 서비스 구독 필요",
+      "substitute": "기업 공시(SEC EDGAR·OpenDART)의 실제 실적만 사용",
+      "impact": "실적이 예상보다 좋았는지 나빴는지는 판단하지 않고, 실제 숫자 변화만 다룹니다.",
+      "better_source": "FnGuide·LSEG I/B/E/S 등 증권사 추정치 집계 서비스",
+      "gain": "산업별 영향 판단에 '시장 기대 대비' 관점 추가"
+    },
+    {
+      "id": "fund_flows",
+      "priority": 4,
+      "name": "글로벌 펀드·ETF 자금 흐름",
+      "why": "유료 데이터 서비스 구독 필요",
+      "substitute": "선물 포지션(CFTC 보고서, 무료)과 변동성 지표",
+      "impact": "'돈이 어디로 옮겨 가는지'는 간접 지표로만 추정합니다.",
+      "better_source": "EPFR 등 펀드 자금 흐름 데이터 서비스",
+      "gain": "투자 심리·쏠림 판단을 직접 수치로 확인"
+    },
+    {
+      "id": "realtime_quotes",
+      "priority": 5,
+      "name": "실시간 시세",
+      "why": "실시간 재배포는 유료 라이선스",
+      "substitute": "무료 위젯(지연 시세)과 공공 통계(일별 종가)",
+      "impact": "계기판 시세는 지연될 수 있고, 신호 판정은 전일 종가 기준입니다.",
+      "better_source": "거래소 정보 이용 계약 또는 라이선스를 가진 시세 제공 업체",
+      "gain": "장중 급변 시 신호등을 당일에 갱신"
+    },
+    {
+      "id": "gold_spot",
+      "priority": 6,
+      "name": "금 현물 기준가격",
+      "why": "재가공·재배포는 유료 라이선스",
+      "substitute": "화면 위젯 표시만",
+      "impact": "금은 신호등 판정과 과거 비교에서 빠져 있습니다.",
+      "better_source": "LBMA 금 가격 라이선스 또는 이를 재배포하는 유료 데이터 업체",
+      "gain": "안전자산 흐름을 신호등·지나온 길 비교에 포함"
+    }
+  ]
 }

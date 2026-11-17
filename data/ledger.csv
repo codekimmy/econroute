@@ -1,0 +1,4 @@
+signal_id,issued_on,indicator,obs_date,color,direction,change,change_unit,rule_version,recheck_on,data_status,forecast,metric,threshold,result,cause
+us_10y-2026-11-13,2026-11-17,us_10y,2026-11-13,빨강,상승,0.31,%p,1.0,2026-12-08,정상,,,,대기,
+btc-2026-11-16,2026-11-17,btc,2026-11-16,노랑,하락,-12.5231,%,1.0,2026-12-08,정상,,,,대기,
+usdkrw-2026-11-17,2026-11-17,usdkrw,2026-11-17,노랑,하락,-1.5269,%,1.0,2026-12-08,정상,,,,대기,
