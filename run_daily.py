@@ -23,6 +23,8 @@ def main():
         s["data_status"] = st.get(ind["id"], {}).get("status", "")
         if ind.get("note"):
             s["note"] = ind["note"]
+        if ind.get("cadence"):
+            s["cadence"], s["cadence_note"] = ind["cadence"], ind.get("cadence_note", "")
         if ind.get("dest"):
             s["dest"], s["eta"] = ind["dest"], ind.get("eta", "")
         signals.append(s)
