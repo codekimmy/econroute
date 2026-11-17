@@ -99,7 +99,39 @@
       }
     });
   }
-  function decorate() { tagHeadings(); addLegends(); }
+  // reading depth tabs: 10초 (signal box) / 1분 (first section) / 10분 심층 (우회·반대·지나온 길)
+  // a post can set its own targets with id="wes-1m" and id="wes-10m" on any element
+  function addDepthTabs() {
+    document.querySelectorAll(".post-body").forEach(function (body) {
+      var sig = body.querySelector(".wes-signal");
+      if (!sig || body.querySelector(".wes-depth")) return;
+      var hs = [].slice.call(body.querySelectorAll("h2"));
+      var one = body.querySelector("#wes-1m") || hs[0];
+      var deep = body.querySelector("#wes-10m") || hs.filter(function (h) { return /^(우회|반대|지나온)/.test((h.textContent || "").trim()); })[0];
+      var targets = [["10초", sig], ["1분", one], ["10분 심층", deep]].filter(function (t) { return t[1]; });
+      if (targets.length < 2) return;
+      var nav = document.createElement("nav"); nav.className = "wes-depth"; nav.setAttribute("aria-label", "읽는 깊이");
+      var links = targets.map(function (t, i) {
+        var a = document.createElement("a"); a.href = "#"; a.textContent = t[0];
+        if (i === 0) a.className = "on";
+        a.addEventListener("click", function (ev) {
+          ev.preventDefault();
+          var y = t[1].getBoundingClientRect().top + window.pageYOffset - nav.offsetHeight - 16;
+          window.scrollTo({ top: y, behavior: "smooth" });
+        });
+        nav.appendChild(a);
+        return a;
+      });
+      sig.parentNode.insertBefore(nav, sig);
+      function mark() {
+        var line = nav.getBoundingClientRect().bottom + 40, idx = 0;
+        targets.forEach(function (t, i) { if (t[1].getBoundingClientRect().top <= line) idx = i; });
+        links.forEach(function (a, i) { a.className = i === idx ? "on" : ""; });
+      }
+      window.addEventListener("scroll", mark, { passive: true });
+    });
+  }
+  function decorate() { tagHeadings(); addLegends(); addDepthTabs(); }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", decorate); else decorate();
   window.addEventListener("scroll", closeTip, { passive: true });
   document.addEventListener("DOMContentLoaded", function () {
