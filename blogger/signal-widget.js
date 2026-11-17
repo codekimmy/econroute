@@ -204,7 +204,7 @@
     var now = new Date();
     box.innerHTML = "";
     masthead(box, data, now);
-    if (!isHome()) return; // post and static pages: masthead only
+    if (!isHome()) { box.className += " wes-compact"; return; } // post and static pages: masthead only
     box.appendChild(section("오늘의 신호등", "평소와 얼마나 다른 움직임인가"));
     var wrap = el("div", "wes-cards");
     data.signals.slice(0, SHOW).forEach(function (s) { wrap.appendChild(card(s)); });
