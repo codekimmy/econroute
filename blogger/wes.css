@@ -1,0 +1,69 @@
+/* 경제 내비 (ECON ROUTE) — Blogger 공통 스타일
+   Blogger: 테마 > 맞춤설정 > 고급 > CSS 추가 에 통째로 붙여넣기 */
+
+:root {
+  --wes-green: #1f9d55;  --wes-green-bg: #e9f7ef;
+  --wes-yellow: #c98a00; --wes-yellow-bg: #fff6dd;
+  --wes-red: #d93a3a;    --wes-red-bg: #fdecec;
+  --wes-hold: #7a7a7a;   --wes-hold-bg: #f1f1f1;
+  --wes-ink: #1d1d1f;    --wes-quiet: #6b6b70; --wes-line: #e3e3e6;
+}
+
+/* 10초 신호등 박스 (글 맨 위) */
+.wes-signal { border-left: 6px solid var(--wes-hold); background: var(--wes-hold-bg);
+  border-radius: 10px; padding: 14px 16px; margin: 0 0 20px; }
+.wes-signal .wes-light { font-weight: 700; font-size: 1.05em; }
+.wes-signal .wes-oneline { margin: 6px 0 0; font-size: 1.05em; color: var(--wes-ink); }
+.wes-signal .wes-meta { margin-top: 6px; font-size: .85em; color: var(--wes-quiet); }
+.wes-signal.green  { border-color: var(--wes-green);  background: var(--wes-green-bg); }
+.wes-signal.yellow { border-color: var(--wes-yellow); background: var(--wes-yellow-bg); }
+.wes-signal.red    { border-color: var(--wes-red);    background: var(--wes-red-bg); }
+.wes-signal.green .wes-light  { color: var(--wes-green); }
+.wes-signal.yellow .wes-light { color: var(--wes-yellow); }
+.wes-signal.red .wes-light    { color: var(--wes-red); }
+
+/* 나비효과 체인 */
+.wes-chain { list-style: none; padding: 0; margin: 16px 0; counter-reset: c; }
+.wes-chain li { position: relative; padding: 10px 12px 10px 44px; margin: 0 0 22px;
+  border: 1px solid var(--wes-line); border-radius: 10px; counter-increment: c; }
+.wes-chain li::before { content: counter(c); position: absolute; left: 12px; top: 10px;
+  width: 22px; height: 22px; border-radius: 50%; background: var(--wes-ink); color: #fff;
+  font-size: .8em; text-align: center; line-height: 22px; }
+.wes-chain li:not(:last-child)::after { content: "↓"; position: absolute; left: 50%; bottom: -21px;
+  color: var(--wes-quiet); }
+.wes-chain .wes-lag { color: var(--wes-quiet); font-size: .85em; margin-left: 6px; }
+.wes-chain li:last-child { border-color: var(--wes-ink); font-weight: 600; } /* 끝은 항상 생활 항목 */
+
+/* 내 지갑 환산 */
+.wes-wallet { background: #f6f8fb; border-radius: 10px; padding: 12px 16px; margin: 16px 0; }
+.wes-wallet b { font-size: 1.1em; }
+
+/* 접힌 근거 상자 */
+details.wes-evidence { border: 1px solid var(--wes-line); border-radius: 10px; padding: 10px 14px;
+  margin: 24px 0; font-size: .9em; color: var(--wes-quiet); }
+details.wes-evidence summary { cursor: pointer; font-weight: 600; color: var(--wes-ink); }
+
+/* 재확인 배너 (자기 점검 루프) */
+.wes-recheck { border-radius: 10px; padding: 10px 14px; margin: 0 0 16px; font-size: .92em;
+  background: #eef3ff; border: 1px solid #c9d6ff; }
+
+/* 용어 팝업 */
+.wes-term { border-bottom: 1px dotted currentColor; cursor: help; }
+.wes-tip { position: absolute; z-index: 9999; max-width: 300px; background: #1d1d1f; color: #fff;
+  border-radius: 10px; padding: 12px 14px; font-size: 14px; line-height: 1.5;
+  box-shadow: 0 6px 20px rgba(0,0,0,.18); }
+.wes-tip .wes-tip-term { font-weight: 700; margin-bottom: 4px; }
+.wes-tip .wes-tip-ex { margin-top: 6px; color: #cfcfd4; font-size: 13px; }
+.wes-tip a { color: #9ec1ff; display: inline-block; margin-top: 6px; }
+
+/* 홈 '오늘의 신호' 카드 */
+.wes-cards { display: grid; gap: 10px; margin: 8px 0 16px; }
+.wes-card { border-radius: 10px; padding: 12px 14px; border-left: 6px solid var(--wes-hold);
+  background: var(--wes-hold-bg); }
+.wes-card.green  { border-color: var(--wes-green);  background: var(--wes-green-bg); }
+.wes-card.yellow { border-color: var(--wes-yellow); background: var(--wes-yellow-bg); }
+.wes-card.red    { border-color: var(--wes-red);    background: var(--wes-red-bg); }
+.wes-card .wes-card-name { font-weight: 700; }
+.wes-card .wes-card-reason { margin-top: 4px; font-size: .92em; }
+.wes-card .wes-card-meta { margin-top: 4px; font-size: .8em; color: var(--wes-quiet); }
+.wes-foot { font-size: .8em; color: var(--wes-quiet); }
