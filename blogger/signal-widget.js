@@ -1,4 +1,4 @@
-/* ECON ROUTE - morning-paper home (masthead + today's signals + top route + caution + track record)
+/* ECON ROUTE - clean home (brand bar + today's signals + latest route + caution + gauges + track record)
    Blogger Layout - Page Body - HTML/JavaScript gadget (leave the gadget title EMPTY):
      div id="wes-signals" + script src=".../blogger/signal-widget.js" */
 (function () {
@@ -7,6 +7,7 @@
   var SHOW = 3;
   var CLS = { "초록": "green", "노랑": "yellow", "빨강": "red", "보류": "hold" };
   var DAYS = ["일", "월", "화", "수", "목", "금", "토"];
+  var LEGEND = [["fact", "확인된 사실"], ["likely", "가능성 높음"], ["maybe", "가늠 어려움"]];
 
   function el(tag, cls, text) {
     var e = document.createElement(tag);
@@ -17,7 +18,7 @@
   function kst(d) { return new Date(d.getTime() + 9 * 3600 * 1000); } // read with getUTC*
   function pad(n) { return (n < 10 ? "0" : "") + n; }
   function fmtValue(s) {
-    if (s.value == null) return "";
+    if (s.value == null) return "-";
     var v = Number(s.value);
     if (s.unit === "%") return v.toFixed(2) + "%";
     var digits = Math.abs(v) >= 1000 ? 1 : 2;
@@ -32,7 +33,7 @@
   function dayNum(iso) { return Date.UTC(+iso.slice(0, 4), +iso.slice(5, 7) - 1, +iso.slice(8, 10)) / 864e5; }
   function todayNum(now) { var k = kst(now); return Date.UTC(k.getUTCFullYear(), k.getUTCMonth(), k.getUTCDate()) / 864e5; }
   function dday(iso, now) { var n = Math.round(dayNum(iso) - todayNum(now)); return n === 0 ? "D-DAY" : "D-" + n; }
-  function mmdd(iso) { return iso.slice(5, 7) + "." + iso.slice(8, 10); }
+  function md(iso) { var d = new Date(Date.UTC(+iso.slice(0, 4), +iso.slice(5, 7) - 1, +iso.slice(8, 10))); return (+iso.slice(5, 7)) + "/" + (+iso.slice(8, 10)) + " (" + DAYS[d.getUTCDay()] + ")"; }
   function korDate(iso) { return (+iso.slice(5, 7)) + "월 " + (+iso.slice(8, 10)) + "일"; }
 
   function lights(color) {
@@ -40,82 +41,66 @@
     l.appendChild(el("i")); l.appendChild(el("i")); l.appendChild(el("i"));
     return l;
   }
-
-  function masthead(box, data, now) {
-    var k = kst(now), g = kst(new Date(data.generated_at));
-    var top = el("div", "wes-topbar");
-    top.appendChild(el("span", null, k.getUTCFullYear() + "년 " + (k.getUTCMonth() + 1) + "월 " + k.getUTCDate() + "일 " + DAYS[k.getUTCDay()] + "요일"));
-    top.appendChild(el("span", "wes-tagline", "세계경제에서 내 지갑까지, 길 안내"));
-    top.appendChild(el("span", null, pad(g.getUTCHours()) + ":" + pad(g.getUTCMinutes()) + " 경로 갱신"));
-    box.appendChild(top);
-
-    var cnt = { "빨강": 0, "노랑": 0, "초록": 0 };
-    data.signals.forEach(function (s) { if (cnt[s.color] != null) cnt[s.color]++; });
-
-    var m = el("div", "wes-mast");
-    var l = el("div", "wes-mast-l");
-    l.appendChild(el("b", null, "오늘의 교통 상황"));
-    l.appendChild(el("span", null, "신호 " + data.signals.length + "개 중 " + (cnt["빨강"] + cnt["노랑"]) + "개 점등"));
-    l.appendChild(el("span", null, "신호 규칙 v" + data.rule_version));
-    var t = el("a", "wes-title"); t.href = "/";
-    t.appendChild(el("span", "wes-kicker", "ECON ROUTE"));
-    t.appendChild(el("span", "wes-name", "경제 내비"));
-    var r = el("div", "wes-mast-r");
-    var row = el("div", "wes-cnt");
-    [["빨강", "red"], ["노랑", "yellow"], ["초록", "green"]].forEach(function (p) {
-      var c = el("span", "wes-cnt-" + p[1]); c.title = p[0] + " 신호";
-      c.appendChild(el("i")); c.appendChild(document.createTextNode(String(cnt[p[0]])));
-      row.appendChild(c);
+  function legendFor(classes) {
+    var box = el("div", "wes-route-legend");
+    LEGEND.forEach(function (l) {
+      if (classes.indexOf(l[0]) < 0) return;
+      var s = el("span", l[0]); s.appendChild(el("i")); s.appendChild(document.createTextNode(l[1]));
+      box.appendChild(s);
     });
-    r.appendChild(row);
-    r.appendChild(el("small", null, "빨강 · 노랑 · 초록"));
-    m.appendChild(l); m.appendChild(t); m.appendChild(r);
-    box.appendChild(m);
+    return box;
+  }
+  function card(title, extra) { var c = el("section", "wes-box" + (extra ? " " + extra : "")); if (title) c.appendChild(el("h2", "wes-box-h", title)); return c; }
 
-    var ups = data.upcoming || [];
-    var nx = el("div", "wes-next");
-    nx.appendChild(el("span", "wes-turn"));
-    var txt = el("span", "wes-next-t");
-    txt.appendChild(el("small", null, "다음 안내"));
-    if (ups.length) {
-      txt.appendChild(el("b", null, korDate(ups[0].date) + " " + ups[0].name));
-      if (ups[1]) {
-        var gap = Math.round(dayNum(ups[1].date) - dayNum(ups[0].date));
-        txt.appendChild(el("span", "wes-next-2", " · " + (gap === 1 ? "다음 날 " : korDate(ups[1].date) + " ") + ups[1].name));
-      }
-    } else txt.appendChild(el("b", null, "예정된 주요 일정 없음"));
-    nx.appendChild(txt);
-    if (ups.length) nx.appendChild(el("em", null, dday(ups[0].date, now)));
-    box.appendChild(nx);
+  function header(box, data, now) {
+    var top = el("div", "wes-top");
+    var brand = el("a", "wes-brand"); brand.href = "/";
+    brand.appendChild(el("span", "wes-logo"));
+    var bt = el("span", "wes-brand-t"); bt.appendChild(el("b", null, "경제 내비")); bt.appendChild(el("small", null, "ECON ROUTE"));
+    brand.appendChild(bt); top.appendChild(brand);
+    var up = (data.upcoming || [])[0];
+    if (up) {
+      var nx = el("span", "wes-next");
+      nx.appendChild(el("small", null, "다음 안내"));
+      nx.appendChild(el("b", null, korDate(up.date) + " " + up.name));
+      nx.appendChild(el("em", null, dday(up.date, now)));
+      top.appendChild(nx);
+    }
+    box.appendChild(top);
+    var g = kst(new Date(data.generated_at));
+    var strip = el("div", "wes-strip");
+    strip.appendChild(el("span", null, "세계경제에서 내 지갑까지, 길 안내"));
+    strip.appendChild(el("span", "wes-mono", (g.getUTCMonth() + 1) + "/" + g.getUTCDate() + " " + pad(g.getUTCHours()) + ":" + pad(g.getUTCMinutes()) + " 경로 갱신"));
+    box.appendChild(strip);
   }
 
-  function card(s) {
+  function signalCard(s) {
     var color = CLS[s.color] || "hold";
     var c = el("div", "wes-card " + color);
     var top = el("div", "wes-card-top");
     top.appendChild(lights(color));
-    top.appendChild(el("span", "wes-card-word", s.color + " 신호"));
+    top.appendChild(el("span", "wes-card-word", s.color));
+    top.appendChild(el("span", "wes-card-name", s.name));
     c.appendChild(top);
-    c.appendChild(el("div", "wes-card-name", s.name));
     var num = el("div", "wes-card-num");
     num.appendChild(el("b", null, fmtValue(s)));
     num.appendChild(el("small", null, fmtChange(s)));
     c.appendChild(num);
     c.appendChild(el("div", "wes-card-reason", s.reason || ""));
-    if (s.data_note) c.appendChild(el("div", "wes-card-meta", "※ " + s.data_note));
-    if (s.dest) c.appendChild(el("span", "wes-sign", "도착지 · " + s.dest + (s.eta ? " · " + s.eta : "")));
+    if (s.data_note) c.appendChild(el("div", "wes-card-note", "※ " + s.data_note));
+    if (s.dest) {
+      var d = el("div", "wes-dest");
+      d.appendChild(el("span", "wes-pin"));
+      d.appendChild(el("span", "wes-dest-t", "도착지: " + s.dest));
+      d.appendChild(el("span", "wes-mono", s.eta || ""));
+      c.appendChild(d);
+    }
     c.appendChild(el("div", "wes-card-meta", "기준일 " + (s.date || "-") + " · 데이터 " + (s.data_status || "-")));
     return c;
   }
 
-  function section(text, sub) {
-    var h = el("div", "wes-sec"); h.appendChild(el("span", "wes-sec-t", text));
-    if (sub) h.appendChild(el("span", "wes-sec-s", sub));
-    return h;
-  }
-
-  // top story: newest post, its route line read from the post's .wes-chain (text only)
-  function topStory(holder) {
+  // latest post: title, lede and its route line (text only, read from the post's own markup)
+  function latest(holder) {
     if (!window.fetch || !window.DOMParser) return;
     fetch(FEED_URL).then(function (r) { return r.json(); }).then(function (f) {
       var e = f.feed && f.feed.entry && f.feed.entry[0];
@@ -124,71 +109,99 @@
       (e.link || []).forEach(function (x) { if (x.rel === "alternate") link = x.href; });
       var total = +((f.feed.openSearch$totalResults || {}).$t || 1);
       var doc = new DOMParser().parseFromString((e.content || e.summary || {}).$t || "", "text/html");
-      var p = el("a", "wes-story"); p.href = link;
+      var box = card("최신 길 안내", "wes-latest");
+      var a = el("a", "wes-story"); a.href = link;
       var no = String(total); while (no.length < 3) no = "0" + no;
-      p.appendChild(el("span", "wes-story-k", "ROUTE " + no + " · 경로 안내"));
-      p.appendChild(el("span", "wes-story-h", (e.title.$t || "").split(" — ")[0]));
+      a.appendChild(el("span", "wes-pill", "경로 안내 · ROUTE " + no));
+      a.appendChild(el("span", "wes-story-h", (e.title.$t || "").split(" — ")[0]));
+      var lede = doc.querySelector(".wes-oneline");
+      if (lede) a.appendChild(el("span", "wes-story-lede", lede.textContent.replace(/\s+/g, " ").trim()));
       var chain = doc.querySelector(".wes-chain");
       if (chain) {
-        var color = /\b(red|yellow|green)\b/.exec(chain.className); color = color ? color[1] : "ink";
-        var items = [].slice.call(chain.querySelectorAll("li")).map(function (li) {
+        var lis = [].slice.call(chain.querySelectorAll("li"));
+        var certainty = lis.map(function (li) { var m = /\b(fact|likely|maybe)\b/.exec(li.className); return m ? m[1] : ""; });
+        var items = lis.map(function (li) {
           var c = li.cloneNode(true);
           [].forEach.call(c.querySelectorAll(".wes-lag"), function (x) { x.parentNode.removeChild(x); });
           return c.textContent.replace(/\s+/g, " ").trim().replace(/^(출발|경유|도착)\s*·\s*/, "");
         });
-        var route = el("span", "wes-route " + color);
+        var route = el("span", "wes-route");
         items.forEach(function (_, i) {
           route.appendChild(el("i", i === items.length - 1 ? "pin" : "n"));
-          if (i < items.length - 1) route.appendChild(el("b"));
+          if (i < items.length - 1) route.appendChild(el("b", certainty[i + 1] || null));
         });
-        p.appendChild(route);
+        a.appendChild(route);
         var labels = el("span", "wes-route-l");
-        labels.style.gridTemplateColumns = "repeat(" + items.length + ", minmax(0, 1fr))";
-        items.forEach(function (t) { labels.appendChild(el("span", null, t)); });
-        p.appendChild(labels);
+        labels.appendChild(el("span", null, items[0]));
+        labels.appendChild(el("span", null, items[items.length - 1]));
+        a.appendChild(labels);
+        if (certainty.join("")) a.appendChild(legendFor(certainty.join(" ")));
       }
-      var lede = doc.querySelector(".wes-oneline");
-      if (lede) p.appendChild(el("span", "wes-story-lede", lede.textContent.replace(/\s+/g, " ").trim()));
-      p.appendChild(el("span", "wes-story-go", "경로 안내 시작"));
-      holder.appendChild(p);
-      holder.parentNode.classList.add("has-story");
+      a.appendChild(el("span", "wes-go", "경로 안내 시작 →"));
+      box.appendChild(a);
+      holder.insertBefore(box, holder.firstChild);
     }).catch(function () {});
   }
 
-  function side(data, now) {
-    var s = el("div", "wes-side");
-    s.appendChild(el("div", "wes-side-h", "전방 주의 구간"));
+  function caution(data, now) {
+    var c = card(null, "wes-caution");
+    var h = el("h2", "wes-box-h"); h.appendChild(el("span", "wes-warn")); h.appendChild(document.createTextNode("전방 주의 구간"));
+    c.appendChild(h);
     var ups = data.upcoming || [];
-    if (!ups.length) s.appendChild(el("div", "wes-note", "예정된 주요 일정이 없습니다."));
+    if (!ups.length) c.appendChild(el("p", "wes-muted", "예정된 주요 일정이 없습니다."));
     ups.forEach(function (u) {
       var r = el("div", "wes-ev");
-      r.appendChild(el("b", null, mmdd(u.date)));
-      r.appendChild(el("span", null, u.name));
+      r.appendChild(el("span", "wes-mono", md(u.date)));
+      r.appendChild(el("span", "wes-ev-t", u.name));
       r.appendChild(el("em", null, dday(u.date, now)));
-      s.appendChild(r);
+      c.appendChild(r);
     });
+    return c;
+  }
+
+  function gauges(data) {
+    var c = card("계기판", "wes-gauges");
+    var g = el("div", "wes-grid");
+    data.signals.forEach(function (s) {
+      var t = el("div", "wes-tick");
+      var n = el("span", "wes-tick-n"); n.appendChild(el("i", CLS[s.color] || "hold")); n.appendChild(document.createTextNode(s.name));
+      t.appendChild(n);
+      t.appendChild(el("span", "wes-tick-v", fmtValue(s)));
+      t.appendChild(el("span", "wes-tick-c", fmtChange(s)));
+      g.appendChild(t);
+    });
+    c.appendChild(g);
+    c.appendChild(el("p", "wes-muted", "표시 전용이며 자료마다 갱신 시점이 다릅니다. 색은 좋고 나쁨이 아니라 평소와 얼마나 다른 움직임인지를 뜻합니다."));
+    return c;
+  }
+
+  function track(data) {
     var t = data.track || {};
-    s.appendChild(el("div", "wes-side-h wes-gap", "운행 기록"));
-    var odo = el("div", "wes-odo"); odo.setAttribute("aria-hidden", "true");
-    var digits = String(t.registered || 0); while (digits.length < 3) digits = "0" + digits;
-    digits.split("").forEach(function (d) { odo.appendChild(el("span", null, d)); });
-    s.appendChild(odo);
-    var line = "등록 전망 " + (t.registered || 0) + "건";
-    if (t.scored) line += " · 채점 " + t.scored + "건 중 " + (t.hits || 0) + "건 적중";
-    if (t.next_check) line += " · " + (t.scored ? "다음" : "첫") + " 채점 " + korDate(t.next_check);
-    s.appendChild(el("div", "wes-note", line));
-    return s;
+    var c = card(null, "wes-track");
+    c.appendChild(el("span", "wes-track-k", "운행 기록"));
+    var big = el("span", "wes-track-big");
+    if (t.scored) {
+      big.appendChild(el("b", "wes-mono", Math.round(100 * (t.hits || 0) / t.scored) + "%"));
+      big.appendChild(el("span", null, "예상대로 도착 (" + t.scored + "건 채점)"));
+    } else {
+      big.appendChild(el("b", "wes-mono", String(t.registered || 0)));
+      big.appendChild(el("span", null, "건 전망 등록 · 채점 대기"));
+    }
+    c.appendChild(big);
+    c.appendChild(el("span", "wes-track-note", (t.next_check ? (t.scored ? "다음" : "첫") + " 채점 " + korDate(t.next_check) + ". " : "") +
+      "빗나간 안내는 왜 경로를 다시 찾았는지까지 공개합니다."));
+    return c;
   }
 
   function paidBox(paid) {
-    var d = el("details", "wes-paid");
-    d.appendChild(el("summary", null, "공사 구간 · 유료라 쓰지 않은 자료 " + paid.length + "건"));
+    var d = el("details", "wes-box wes-paid");
+    d.appendChild(el("summary", null, "유료라 쓰지 않은 자료 " + paid.length + "건 — 이 신호등의 한계와 더 정확해지는 방법"));
     var ul = el("ul");
     paid.forEach(function (p) {
       var li = el("li");
       li.appendChild(el("b", null, p.name));
       li.appendChild(el("span", null, " · 대신: " + p.substitute + " · 영향: " + p.impact));
-      if (p.better_source) li.appendChild(el("div", "wes-paid-up", "더 정확해지려면: " + p.better_source + " → " + p.gain));
+      if (p.better_source) li.appendChild(el("span", "wes-paid-up", "더 정확해지려면: " + p.better_source + " → " + p.gain));
       ul.appendChild(li);
     });
     d.appendChild(ul);
@@ -201,22 +214,28 @@
   }
 
   function render(box, data) {
-    var now = new Date();
+    var now = new Date(), k = kst(now);
     box.innerHTML = "";
-    masthead(box, data, now);
-    if (!isHome()) { box.className += " wes-compact"; return; } // post and static pages: masthead only
-    box.appendChild(section("오늘의 신호등", "평소와 얼마나 다른 움직임인가"));
+    header(box, data, now);
+    if (!isHome()) { box.className += " wes-compact"; return; } // post and static pages: brand bar only
+
+    var head = el("div", "wes-sec");
+    head.appendChild(el("h2", null, "오늘의 신호등"));
+    head.appendChild(el("p", null, (k.getUTCMonth() + 1) + "월 " + k.getUTCDate() + "일 (" + DAYS[k.getUTCDay()] + ") · 색은 좋고 나쁨이 아니라, 평소와 얼마나 다른 움직임인지를 뜻합니다."));
+    box.appendChild(head);
     var wrap = el("div", "wes-cards");
-    data.signals.slice(0, SHOW).forEach(function (s) { wrap.appendChild(card(s)); });
+    data.signals.slice(0, SHOW).forEach(function (s) { wrap.appendChild(signalCard(s)); });
     box.appendChild(wrap);
-    box.appendChild(el("div", "wes-foot", "색은 좋고 나쁨이 아니라 평소와 얼마나 다른 움직임인지를 뜻합니다."));
-    var row = el("div", "wes-row");
-    var story = el("div", "wes-story-box");
-    row.appendChild(story);
-    row.appendChild(side(data, now));
-    box.appendChild(row);
-    if ((data.paid_not_used || []).length) box.appendChild(paidBox(data.paid_not_used));
-    topStory(story);
+
+    var cols = el("div", "wes-cols");
+    var left = el("div", "wes-col"), right = el("div", "wes-col");
+    left.appendChild(gauges(data));
+    right.appendChild(caution(data, now));
+    right.appendChild(track(data));
+    if ((data.paid_not_used || []).length) right.appendChild(paidBox(data.paid_not_used));
+    cols.appendChild(left); cols.appendChild(right);
+    box.appendChild(cols);
+    latest(left);
   }
 
   function start() {

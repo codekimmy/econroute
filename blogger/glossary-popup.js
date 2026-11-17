@@ -69,6 +69,38 @@
 
   document.addEventListener("click", closeTip);
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeTip(); });
+
+  // section headings: color the icon by role (빨강/노랑/초록 신호, 우회 경로, 반대로 보는 시각, 지나온 길, 전방 주의)
+  var ROLES = [["빨강", "red"], ["노랑", "yellow"], ["초록", "green"], ["우회", "detour"], ["반대", "opposite"], ["지나온", "past"], ["전방", "caution"]];
+  var LEGEND = [["fact", "확인된 사실"], ["likely", "가능성 높음"], ["maybe", "가늠 어려움"]];
+  function legendFor(classes) {
+    var box = document.createElement("div"); box.className = "wes-route-legend";
+    LEGEND.forEach(function (l) {
+      if (classes.indexOf(l[0]) < 0) return;
+      var s = document.createElement("span"); s.className = l[0];
+      s.appendChild(document.createElement("i")); s.appendChild(document.createTextNode(l[1]));
+      box.appendChild(s);
+    });
+    return box;
+  }
+  function addLegends() {
+    document.querySelectorAll(".post-body .wes-chain").forEach(function (ol) {
+      if (ol.nextElementSibling && ol.nextElementSibling.className === "wes-route-legend") return;
+      var used = [].map.call(ol.querySelectorAll("li"), function (li) { return li.className; });
+      if (!used.some(function (c) { return /fact|likely|maybe/.test(c); })) return;
+      ol.parentNode.insertBefore(legendFor(used.join(" ")), ol.nextSibling);
+    });
+  }
+  function tagHeadings() {
+    document.querySelectorAll(".post-body h2").forEach(function (h) {
+      var t = (h.textContent || "").replace(/^\s+/, "");
+      for (var i = 0; i < ROLES.length; i++) {
+        if (t.indexOf(ROLES[i][0]) === 0) { h.classList.add("wes-h-" + ROLES[i][1]); break; }
+      }
+    });
+  }
+  function decorate() { tagHeadings(); addLegends(); }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", decorate); else decorate();
   window.addEventListener("scroll", closeTip, { passive: true });
   document.addEventListener("DOMContentLoaded", function () {
     fetch(WES_GLOSSARY_URL).then(function (r) { return r.json(); }).then(run).catch(function () {});
