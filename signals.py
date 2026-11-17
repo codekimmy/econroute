@@ -33,8 +33,16 @@ def _changes(vals, method, w):
 
 def evaluate(ind, rows):
     base = {"id": ind["id"], "name": ind["name"], "rule_version": RULE_VERSION}
+    notes = []
     if ind["transform"] == "yoy":
+        raw_last = rows[-1][0] if rows else None
         rows = _yoy(rows)
+        if rows and raw_last and rows[-1][0] < raw_last:
+            prev = f"{int(raw_last[:4]) - 1}년 {int(raw_last[5:7])}월"
+            notes.append(f"기준이 되는 {prev} 값이 원 자료에 없어 {raw_last[:7]} 전년비를 계산할 수 없습니다. "
+                         f"계산 가능한 최근 시점({rows[-1][0][:7]})으로 표시합니다.")
+    if notes:
+        base["data_note"] = " ".join(notes)
     if len(rows) <= ind["window"]:
         return {**base, "color": "보류", "reason": "데이터 부족으로 판정 보류"}
 
@@ -62,9 +70,12 @@ def evaluate(ind, rows):
     direction = "상승" if cur > 0 else ("하락" if cur < 0 else "변화 없음")
     base.update(change=round(cur, 4), change_unit=unit_ch, direction=direction)
 
-    if len(hist) < MIN_HISTORY[ind["freq"]]:
+    need = ind.get("min_history", MIN_HISTORY[ind["freq"]])
+    if len(hist) < need:
         return {**base, "color": "보류",
-                "reason": f"비교할 과거 이력 {len(hist)}개로 부족(필요 {MIN_HISTORY[ind['freq']]}개) — 판정 보류"}
+                "reason": f"비교할 과거 이력 {len(hist)}개로 부족(필요 {need}개) — 판정 보류"}
+    days = (date.fromisoformat(last_d) - date.fromisoformat(dates[start_idx])).days
+    span_txt = f"지난 {round(days / 365)}년" if days >= 365 * 1.5 else ("지난 1년" if days >= 300 else f"지난 {max(1, round(days / 30))}개월")
 
     pct = 100.0 * sum(1 for h in hist if h <= abs(cur)) / len(hist)
     color = "빨강" if pct >= RED else ("노랑" if pct >= YELLOW else "초록")
@@ -74,9 +85,9 @@ def evaluate(ind, rows):
     if color == "초록":
         rank = "평소 범위의 움직임"
     else:
-        rank = f"지난 {HISTORY_YEARS}년 같은 기간 움직임 중 " + ("상위 1% 미만" if top < 1 else f"상위 {top:.0f}%") + " 크기"
+        rank = f"{span_txt} 같은 기간 움직임 중 " + ("상위 1% 미만" if top < 1 else f"상위 {top:.0f}%") + " 크기"
     reason = f"{span} {what} {cur:+.2f}{unit_ch} — {rank}"
-    return {**base, "percentile": round(pct, 1), "color": color, "reason": reason}
+    return {**base, "percentile": round(pct, 1), "color": color, "reason": reason, "compared_span": span_txt}
 
 
 LEDGER = DATA / "ledger.csv"

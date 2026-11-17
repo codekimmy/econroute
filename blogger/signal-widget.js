@@ -21,6 +21,7 @@
       var card = el("div", "wes-card " + (CLS[s.color] || "hold"));
       card.appendChild(el("div", "wes-card-name", s.color + " · " + s.name));
       card.appendChild(el("div", "wes-card-reason", s.reason || ""));
+      if (s.data_note) card.appendChild(el("div", "wes-card-meta", "※ " + s.data_note));
       var meta = "기준일 " + (s.date || "-") + " · 데이터 " + (s.data_status || "-");
       card.appendChild(el("div", "wes-card-meta", meta));
       wrap.appendChild(card);

@@ -124,7 +124,7 @@ def collect_one(ind, fetchers=FETCHERS):
         status["last_date"] = last
         if "status" not in status:
             age = (date.today() - date.fromisoformat(last)).days
-            status["status"] = "정상" if age <= MAX_AGE[ind["freq"]] else "지연"
+            status["status"] = "정상" if age <= ind.get("max_age_days", MAX_AGE[ind["freq"]]) else "지연"
             if status["status"] == "지연":
                 status["message"] = f"마지막 관측 {age}일 전"
     return status

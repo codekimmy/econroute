@@ -120,7 +120,8 @@
       "window": 5,
       "unit": "pt",
       "recheck_days": 21,
-      "note": "FRED 제공분은 최근 10년치이며 재게시 제한이 있어 분석용으로만 사용. 화면 시세는 위젯."
+      "note": "FRED가 S&P 500을 최근 1년치만 제공해, 지난 10년이 아니라 받을 수 있는 기간과 비교합니다. 재게시 제한이 있어 분석용으로만 사용하고 화면 시세는 위젯으로 표시합니다.",
+      "min_history": 120
     },
     {
       "id": "wti",
@@ -148,7 +149,8 @@
       "method": "pct",
       "window": 1,
       "unit": "달러/톤",
-      "recheck_days": 45
+      "recheck_days": 45,
+      "max_age_days": 110
     },
     {
       "id": "btc",
