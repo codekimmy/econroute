@@ -195,10 +195,16 @@
     return d;
   }
 
+  function isHome() {
+    var p = location.pathname;
+    return !/\.html$/.test(p) && p.indexOf("/search") !== 0 && p.indexOf("/p/") !== 0;
+  }
+
   function render(box, data) {
     var now = new Date();
     box.innerHTML = "";
     masthead(box, data, now);
+    if (!isHome()) return; // post and static pages: masthead only
     box.appendChild(section("오늘의 신호등", "평소와 얼마나 다른 움직임인가"));
     var wrap = el("div", "wes-cards");
     data.signals.slice(0, SHOW).forEach(function (s) { wrap.appendChild(card(s)); });
