@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-17T06:25:30+00:00",
+  "generated_at": "2026-11-17T08:53:32+00:00",
   "rule_version": "1.0",
   "signals": [
     {
@@ -16,7 +16,9 @@
       "color": "빨강",
       "reason": "최근 5거래일 변동 +0.31%p — 지난 10년 같은 기간 움직임 중 상위 1% 크기",
       "compared_span": "지난 10년",
-      "data_status": "정상"
+      "data_status": "정상",
+      "dest": "내 대출 금리",
+      "eta": "수개월"
     },
     {
       "id": "btc",
@@ -32,7 +34,9 @@
       "color": "노랑",
       "reason": "최근 5거래일 변동 -12.52% — 지난 10년 같은 기간 움직임 중 상위 11% 크기",
       "compared_span": "지난 10년",
-      "data_status": "정상"
+      "data_status": "정상",
+      "dest": "코인 계좌",
+      "eta": "바로"
     },
     {
       "id": "usdkrw",
@@ -48,7 +52,9 @@
       "color": "노랑",
       "reason": "최근 5거래일 변동 -1.53% — 지난 10년 같은 기간 움직임 중 상위 17% 크기",
       "compared_span": "지난 10년",
-      "data_status": "정상"
+      "data_status": "정상",
+      "dest": "직구·해외여행",
+      "eta": "바로"
     },
     {
       "id": "us_cpi",
@@ -65,7 +71,9 @@
       "color": "초록",
       "reason": "최근 1개월 전년비 상승률 변화 +0.36%p — 평소 범위의 움직임",
       "compared_span": "지난 10년",
-      "data_status": "정상"
+      "data_status": "정상",
+      "dest": "장바구니 물가",
+      "eta": "수개월"
     },
     {
       "id": "sp500",
@@ -82,7 +90,9 @@
       "reason": "최근 5거래일 변동 -1.77% — 평소 범위의 움직임",
       "compared_span": "지난 1년",
       "data_status": "정상",
-      "note": "FRED가 S&P 500을 최근 1년치만 제공해, 지난 10년이 아니라 받을 수 있는 기간과 비교합니다. 재게시 제한이 있어 분석용으로만 사용하고 화면 시세는 위젯으로 표시합니다."
+      "note": "FRED가 S&P 500을 최근 1년치만 제공해, 지난 10년이 아니라 받을 수 있는 기간과 비교합니다. 재게시 제한이 있어 분석용으로만 사용하고 화면 시세는 위젯으로 표시합니다.",
+      "dest": "해외 주식·연금",
+      "eta": "바로"
     },
     {
       "id": "kospi",
@@ -98,7 +108,9 @@
       "color": "초록",
       "reason": "최근 5거래일 변동 +1.63% — 평소 범위의 움직임",
       "compared_span": "지난 10년",
-      "data_status": "정상"
+      "data_status": "정상",
+      "dest": "국내 주식·ETF",
+      "eta": "바로"
     },
     {
       "id": "wti",
@@ -114,7 +126,9 @@
       "color": "초록",
       "reason": "최근 5거래일 변동 -2.30% — 평소 범위의 움직임",
       "compared_span": "지난 10년",
-      "data_status": "정상"
+      "data_status": "정상",
+      "dest": "주유비",
+      "eta": "2~3주"
     },
     {
       "id": "copper",
@@ -130,7 +144,9 @@
       "color": "초록",
       "reason": "최근 1개월 변동 +0.99% — 평소 범위의 움직임",
       "compared_span": "지난 10년",
-      "data_status": "정상"
+      "data_status": "정상",
+      "dest": "전기·건설 자재값",
+      "eta": "수개월"
     },
     {
       "id": "kr_cpi",
@@ -146,7 +162,9 @@
       "color": "초록",
       "reason": "최근 1개월 전년비 상승률 변화 -0.06%p — 평소 범위의 움직임",
       "compared_span": "지난 10년",
-      "data_status": "정상"
+      "data_status": "정상",
+      "dest": "장바구니",
+      "eta": "바로"
     },
     {
       "id": "us_policy_rate",
@@ -160,13 +178,15 @@
       "color": "초록",
       "direction": "변화 없음",
       "reason": "최근 변경 없음",
-      "data_status": "정상"
+      "data_status": "정상",
+      "dest": "대출·예금 금리",
+      "eta": "수개월"
     },
     {
       "id": "kr_base_rate",
       "name": "한국 기준금리",
       "rule_version": "1.0",
-      "date": "2026-11-14",
+      "date": "2026-11-15",
       "value": 3.0,
       "unit": "%",
       "change": 0.0,
@@ -174,14 +194,16 @@
       "color": "초록",
       "direction": "변화 없음",
       "reason": "최근 변경 없음",
-      "data_status": "정상"
+      "data_status": "정상",
+      "dest": "대출·예금 금리",
+      "eta": "수주"
     }
   ],
   "data_status": [
     {
       "id": "us_policy_rate",
       "name": "미국 기준금리(상단)",
-      "fetched_at": "2026-11-17T06:25:21+00:00",
+      "fetched_at": "2026-11-17T08:53:26+00:00",
       "revisions": 0,
       "last_date": "2026-11-16",
       "status": "정상"
@@ -189,7 +211,7 @@
     {
       "id": "us_10y",
       "name": "미국 10년물 국채금리",
-      "fetched_at": "2026-11-17T06:25:22+00:00",
+      "fetched_at": "2026-11-17T08:53:26+00:00",
       "revisions": 0,
       "last_date": "2026-11-13",
       "status": "정상"
@@ -197,7 +219,7 @@
     {
       "id": "us_cpi",
       "name": "미국 소비자물가(전년비)",
-      "fetched_at": "2026-11-17T06:25:22+00:00",
+      "fetched_at": "2026-11-17T08:53:26+00:00",
       "revisions": 0,
       "last_date": "2026-10-01",
       "status": "정상"
@@ -205,15 +227,15 @@
     {
       "id": "kr_base_rate",
       "name": "한국 기준금리",
-      "fetched_at": "2026-11-17T06:25:23+00:00",
+      "fetched_at": "2026-11-17T08:53:27+00:00",
       "revisions": 0,
-      "last_date": "2026-11-14",
+      "last_date": "2026-11-15",
       "status": "정상"
     },
     {
       "id": "kr_cpi",
       "name": "한국 소비자물가(전년비)",
-      "fetched_at": "2026-11-17T06:25:24+00:00",
+      "fetched_at": "2026-11-17T08:53:28+00:00",
       "revisions": 0,
       "last_date": "2026-10-01",
       "status": "정상"
@@ -221,7 +243,7 @@
     {
       "id": "usdkrw",
       "name": "원/달러 환율",
-      "fetched_at": "2026-11-17T06:25:25+00:00",
+      "fetched_at": "2026-11-17T08:53:29+00:00",
       "revisions": 0,
       "last_date": "2026-11-17",
       "status": "정상"
@@ -229,7 +251,7 @@
     {
       "id": "kospi",
       "name": "코스피",
-      "fetched_at": "2026-11-17T06:25:27+00:00",
+      "fetched_at": "2026-11-17T08:53:30+00:00",
       "revisions": 0,
       "last_date": "2026-11-16",
       "status": "정상"
@@ -237,7 +259,7 @@
     {
       "id": "sp500",
       "name": "S&P 500",
-      "fetched_at": "2026-11-17T06:25:29+00:00",
+      "fetched_at": "2026-11-17T08:53:31+00:00",
       "revisions": 0,
       "last_date": "2026-11-16",
       "status": "정상"
@@ -245,7 +267,7 @@
     {
       "id": "wti",
       "name": "WTI 원유",
-      "fetched_at": "2026-11-17T06:25:29+00:00",
+      "fetched_at": "2026-11-17T08:53:32+00:00",
       "revisions": 0,
       "last_date": "2026-11-11",
       "status": "정상"
@@ -253,7 +275,7 @@
     {
       "id": "copper",
       "name": "구리(월평균)",
-      "fetched_at": "2026-11-17T06:25:29+00:00",
+      "fetched_at": "2026-11-17T08:53:32+00:00",
       "revisions": 0,
       "last_date": "2026-09-01",
       "status": "정상"
@@ -261,7 +283,7 @@
     {
       "id": "btc",
       "name": "비트코인",
-      "fetched_at": "2026-11-17T06:25:30+00:00",
+      "fetched_at": "2026-11-17T08:53:32+00:00",
       "revisions": 0,
       "last_date": "2026-11-16",
       "status": "정상"
@@ -346,6 +368,24 @@
       "impact": "금은 신호등 판정과 과거 비교에서 빠져 있습니다.",
       "better_source": "LBMA 금 가격 라이선스 또는 이를 재배포하는 유료 데이터 업체",
       "gain": "안전자산 흐름을 신호등·지나온 길 비교에 포함"
+    }
+  ],
+  "track": {
+    "registered": 1,
+    "scored": 0,
+    "hits": 0,
+    "next_check": "2026-12-17"
+  },
+  "upcoming": [
+    {
+      "date": "2026-12-09",
+      "name": "FOMC 금리 결정",
+      "note": "미국 기준금리 발표"
+    },
+    {
+      "date": "2026-12-10",
+      "name": "미국 11월 CPI",
+      "note": "금리 결정 다음 날"
     }
   ]
 }
