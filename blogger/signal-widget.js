@@ -36,6 +36,22 @@
   function md(iso) { var d = new Date(Date.UTC(+iso.slice(0, 4), +iso.slice(5, 7) - 1, +iso.slice(8, 10))); return (+iso.slice(5, 7)) + "/" + (+iso.slice(8, 10)) + " (" + DAYS[d.getUTCDay()] + ")"; }
   function korDate(iso) { return (+iso.slice(5, 7)) + "월 " + (+iso.slice(8, 10)) + "일"; }
 
+  // update cadence: how often each number can change (fallback map until latest.json carries it)
+  var CADENCE = { daily: "매일", monthly: "매월", meeting: "회의 때" };
+  var CAD_FALLBACK = { us_policy_rate: "meeting", kr_base_rate: "meeting", us_cpi: "monthly", kr_cpi: "monthly", copper: "monthly" };
+  var STALE_DAYS = { daily: 5, monthly: 100, meeting: 100000 };
+  function cadenceOf(s) { return s.cadence || CAD_FALLBACK[s.id] || "daily"; }
+  function ageDays(s, now) { return s.date ? Math.round(todayNum(now) - dayNum(s.date)) : 0; }
+  function freshChips(s, now) {
+    var cad = cadenceOf(s), box = el("span", "wes-fresh");
+    var chip = el("span", "wes-cad " + cad, CADENCE[cad]);
+    if (s.cadence_note) chip.title = s.cadence_note;
+    box.appendChild(chip);
+    if (ageDays(s, now) > STALE_DAYS[cad]) box.appendChild(el("span", "wes-cad stale", "지연"));
+    box.appendChild(el("span", "wes-asof", !s.date ? "-" : cad === "monthly" ? (+s.date.slice(5, 7)) + "월분" : (+s.date.slice(5, 7)) + "/" + (+s.date.slice(8, 10)) + " 기준"));
+    return box;
+  }
+
   function lights(color) {
     var l = el("span", "wes-tl " + color); l.setAttribute("aria-hidden", "true");
     l.appendChild(el("i")); l.appendChild(el("i")); l.appendChild(el("i"));
@@ -95,7 +111,7 @@
       d.appendChild(el("span", "wes-mono", s.eta || ""));
       c.appendChild(d);
     }
-    c.appendChild(el("div", "wes-card-meta", "기준일 " + (s.date || "-") + " · 데이터 " + (s.data_status || "-")));
+    c.appendChild(freshChips(s, new Date()));
     return c;
   }
 
@@ -168,10 +184,16 @@
       t.appendChild(n);
       t.appendChild(el("span", "wes-tick-v", fmtValue(s)));
       t.appendChild(el("span", "wes-tick-c", fmtChange(s)));
+      t.appendChild(freshChips(s, new Date()));
       g.appendChild(t);
     });
     c.appendChild(g);
-    c.appendChild(el("p", "wes-muted", "표시 전용이며 자료마다 갱신 시점이 다릅니다. 색은 좋고 나쁨이 아니라 평소와 얼마나 다른 움직임인지를 뜻합니다."));
+    var lg = el("div", "wes-cad-legend");
+    [["daily", "영업일마다 바뀜 · 미국 자료는 1~3일 늦게 반영"], ["monthly", "한 달에 한 번 발표"], ["meeting", "금리 결정 회의 때만 바뀜"], ["stale", "평소보다 늦게 들어온 자료"]].forEach(function (x) {
+      var r = el("span"); r.appendChild(el("span", "wes-cad " + x[0], x[0] === "stale" ? "지연" : CADENCE[x[0]])); r.appendChild(document.createTextNode(x[1])); lg.appendChild(r);
+    });
+    c.appendChild(lg);
+    c.appendChild(el("p", "wes-muted", "매일 아침 6시 30분 자동 갱신. 숫자 옆 날짜는 그 숫자가 언제 자료인지를 뜻합니다. 색은 좋고 나쁨이 아니라 평소와 얼마나 다른 움직임인지를 뜻합니다."));
     return c;
   }
 
