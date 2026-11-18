@@ -78,6 +78,35 @@
   }
   function card(title, extra) { var c = el("section", "wes-box" + (extra ? " " + extra : "")); if (title) c.appendChild(el("h2", "wes-box-h", title)); return c; }
 
+  var MENU = [["오늘의 신호등", "/search/label/" + encodeURIComponent("오늘의 신호등")], ["경로 안내", "/search/label/" + encodeURIComponent("경로 안내")],
+    ["지나온 길", "/search/label/" + encodeURIComponent("지나온 길")], ["운행 기록", "/search/label/" + encodeURIComponent("운행 기록")],
+    ["초보 운전", "/p/dictionary.html"], ["계기판", "/#wes-gauges"]];
+  var PAGES = [["소개", "/p/about.html"], ["운영 원칙", "/p/principles.html"], ["면책 고지", "/p/disclaimer.html"], ["개인정보처리방침", "/p/privacy.html"], ["문의", "/p/contact.html"]];
+  function menuBar() {
+    var nav = el("nav", "wes-menu"); nav.setAttribute("aria-label", "메뉴");
+    var here = decodeURIComponent(location.pathname);
+    MENU.forEach(function (m) {
+      var a = el("a", null, m[0]); a.href = m[1];
+      var target = decodeURIComponent(m[1].split("#")[0]);
+      if (target !== "/" && here === target) a.className = "on";
+      nav.appendChild(a);
+    });
+    return nav;
+  }
+  function footer() {
+    if (document.querySelector(".wes-footer")) return;
+    var f = el("footer", "wes-footer");
+    var n1 = el("nav", "wes-foot-menu"); n1.setAttribute("aria-label", "메뉴");
+    MENU.forEach(function (m) { var a = el("a", null, m[0]); a.href = m[1]; n1.appendChild(a); });
+    var n2 = el("nav", "wes-foot-pages"); n2.setAttribute("aria-label", "안내");
+    PAGES.forEach(function (m) { var a = el("a", null, m[0]); a.href = m[1]; n2.appendChild(a); });
+    f.appendChild(n1); f.appendChild(n2);
+    f.appendChild(el("p", null, "정보 제공용이며 특정 투자를 권유하지 않습니다. 숫자는 공개 자료를 자동으로 모아 계산한 것으로, 원 자료의 지연·수정이 있을 수 있습니다."));
+    f.appendChild(el("p", "wes-foot-brand", "© 2026 경제 내비 · ECON ROUTE · econroute.blogspot.com"));
+    var host = document.querySelector(".page_body .centered") || document.querySelector(".page_body") || document.body;
+    host.appendChild(f);
+  }
+
   function iconBtn(cls, label) { var b = el("button", "wes-ibtn " + cls); b.type = "button"; b.setAttribute("aria-label", label); return b; }
   function header(box, data, now) {
     var top = el("div", "wes-top");
@@ -106,6 +135,7 @@
     right.appendChild(sb);
     top.appendChild(right);
     box.appendChild(top);
+    box.appendChild(menuBar());
 
     var form = el("form", "wes-search"); form.action = "/search"; form.method = "get"; form.setAttribute("role", "search");
     var q = el("input"); q.type = "search"; q.name = "q"; q.placeholder = "지표, 용어, 글 제목 검색"; q.setAttribute("aria-label", "블로그 검색");
@@ -226,7 +256,7 @@
   }
 
   function gauges(data) {
-    var c = card("계기판", "wes-gauges");
+    var c = card("계기판", "wes-gauges"); c.id = "wes-gauges";
     var g = el("div", "wes-grid");
     data.signals.forEach(function (s) {
       var t = el("div", "wes-tick");
@@ -289,6 +319,7 @@
     var now = new Date(), k = kst(now);
     box.innerHTML = "";
     header(box, data, now);
+    footer();
     if (!isHome()) { box.className += " wes-compact"; return; } // post and static pages: brand bar only
 
     var head = el("div", "wes-sec");

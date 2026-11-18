@@ -4,6 +4,7 @@
    WES_GLOSSARY_URL 을 GitHub Pages 주소로 바꾸세요. */
 (function () {
   var WES_GLOSSARY_URL = "https://codekimmy.github.io/econroute/blogger/glossary.json";
+  var DICT_PATH = "/p/dictionary.html"; // 초보 운전 사전 페이지 (본문에 div id="wes-dictionary" 한 줄)
   var SKIP = { A: 1, SCRIPT: 1, STYLE: 1, CODE: 1, PRE: 1, H1: 1, H2: 1, BUTTON: 1 };
   var tip = null, current = null;
 
@@ -22,10 +23,10 @@
       var e = document.createElement("div"); e.className = "wes-tip-ex"; e.textContent = "예) " + item.example;
       tip.appendChild(e);
     }
-    if (item.url) {
-      var a = document.createElement("a"); a.href = item.url; a.textContent = "더 보기 →";
-      tip.appendChild(a);
-    }
+    var a = document.createElement("a");
+    a.href = item.url || (DICT_PATH + "#" + encodeURIComponent(item.term));
+    a.textContent = "초보 운전 사전에서 더 보기 →";
+    tip.appendChild(a);
     document.body.appendChild(tip);
     var r = el.getBoundingClientRect();
     var left = Math.min(window.scrollX + r.left, window.scrollX + document.documentElement.clientWidth - tip.offsetWidth - 12);
@@ -60,9 +61,40 @@
     span.addEventListener("keydown", function (ev) { if (ev.key === "Enter") openTip(span, item); });
   }
 
+  // 초보 운전 사전: 사전 페이지에 전체 용어를 가나다순으로 펼치고, 검색 칸으로 거릅니다
+  function renderDictionary(box, list) {
+    var items = list.slice().sort(function (a, b) { return a.term.localeCompare(b.term, "ko"); });
+    box.innerHTML = "";
+    var q = document.createElement("input"); q.type = "search"; q.className = "wes-dict-q"; q.placeholder = "용어 찾기 (예: 기준금리, CPI)";
+    q.setAttribute("aria-label", "용어 찾기");
+    var count = document.createElement("p"); count.className = "wes-dict-count";
+    var ul = document.createElement("div"); ul.className = "wes-dict-list";
+    box.appendChild(q); box.appendChild(count); box.appendChild(ul);
+    var rows = items.map(function (it) {
+      var r = document.createElement("div"); r.className = "wes-dict-item"; r.id = it.term;
+      var t = document.createElement("b"); t.textContent = it.term;
+      var d = document.createElement("p"); d.textContent = it.short;
+      r.appendChild(t); r.appendChild(d);
+      if (it.example) { var e = document.createElement("p"); e.className = "wes-dict-ex"; e.textContent = "예) " + it.example; r.appendChild(e); }
+      ul.appendChild(r);
+      return { el: r, text: (it.term + " " + it.short + " " + (it.example || "")).toLowerCase() };
+    });
+    function filter() {
+      var v = q.value.trim().toLowerCase(), n = 0;
+      rows.forEach(function (r) { var on = !v || r.text.indexOf(v) >= 0; r.el.style.display = on ? "" : "none"; if (on) n++; });
+      count.textContent = "용어 " + n + "개" + (v ? " (전체 " + rows.length + "개 중)" : "");
+    }
+    q.addEventListener("input", filter); filter();
+    var h = decodeURIComponent(location.hash.slice(1));
+    if (h) { var target = document.getElementById(h); if (target) { target.className += " on"; target.scrollIntoView({ block: "center" }); } }
+  }
+
   function run(list) {
+    var dict = document.getElementById("wes-dictionary");
+    if (dict) renderDictionary(dict, list);
     list.sort(function (a, b) { return b.term.length - a.term.length; }); // 긴 용어 먼저 (예: '장단기 금리차 역전' > '금리')
     document.querySelectorAll(".post-body").forEach(function (body) {
+      if (body.querySelector("#wes-dictionary")) return;
       list.forEach(function (item) { wrapFirst(body, item); });
     });
   }
@@ -71,7 +103,7 @@
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeTip(); });
 
   // section headings: color the icon by role (빨강/노랑/초록 신호, 우회 경로, 반대로 보는 시각, 지나온 길, 전방 주의)
-  var ROLES = [["빨강", "red"], ["노랑", "yellow"], ["초록", "green"], ["우회", "detour"], ["반대", "opposite"], ["지나온", "past"], ["전방", "caution"]];
+  var ROLES = [["빨강", "red"], ["노랑", "yellow"], ["초록", "green"], ["우회", "detour"], ["다음 갈림길", "detour"], ["갈림길", "detour"], ["반대", "opposite"], ["지나온", "past"], ["전방", "caution"]];
   var LEGEND = [["fact", "확인된 사실"], ["likely", "가능성 높음"], ["maybe", "가늠 어려움"]];
   function legendFor(classes) {
     var box = document.createElement("div"); box.className = "wes-route-legend";
@@ -107,7 +139,7 @@
       if (!sig || body.querySelector(".wes-depth")) return;
       var hs = [].slice.call(body.querySelectorAll("h2"));
       var one = body.querySelector("#wes-1m") || hs[0];
-      var deep = body.querySelector("#wes-10m") || hs.filter(function (h) { return /^(우회|반대|지나온)/.test((h.textContent || "").trim()); })[0];
+      var deep = body.querySelector("#wes-10m") || hs.filter(function (h) { return /^(우회|다음 갈림길|갈림길|반대|지나온)/.test((h.textContent || "").trim()); })[0];
       var targets = [["10초", sig], ["1분", one], ["10분 심층", deep]].filter(function (t) { return t[1]; });
       if (targets.length < 2) return;
       var nav = document.createElement("nav"); nav.className = "wes-depth"; nav.setAttribute("aria-label", "읽는 깊이");
@@ -134,7 +166,6 @@
   function decorate() { tagHeadings(); addLegends(); addDepthTabs(); }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", decorate); else decorate();
   window.addEventListener("scroll", closeTip, { passive: true });
-  document.addEventListener("DOMContentLoaded", function () {
-    fetch(WES_GLOSSARY_URL).then(function (r) { return r.json(); }).then(run).catch(function () {});
-  });
+  function loadGlossary() { fetch(WES_GLOSSARY_URL).then(function (r) { return r.json(); }).then(run).catch(function () {}); }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", loadGlossary); else loadGlossary();
 })();
