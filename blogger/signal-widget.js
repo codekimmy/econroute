@@ -112,7 +112,9 @@
     "Other Apps": "다른 앱", "Show all": "전체 보기", "Show more": "더 보기", "Show less": "접기", "Home": "홈", "Labels": "라벨",
     "More posts": "이전 글 더 보기", "Older Posts": "이전 글", "Newer Posts": "다음 글", "Read more": "길 안내 시작 →", "Read more »": "길 안내 시작 →",
     "Popular posts from this blog": "많이 본 길 안내", "Report Abuse": "신고", "Search This Blog": "블로그 검색", "Archive": "보관함",
-    "No posts with label": "이 라벨의 글이 아직 없습니다", "Powered by Blogger": "Blogger 제공" };
+    "No posts with label": "이 라벨의 글이 아직 없습니다", "Powered by Blogger": "Blogger 제공",
+    "Showing posts with the label": "이 메뉴의 글:", "Showing posts with label": "이 메뉴의 글:", "Showing posts matching the search for": "검색 결과:",
+    "No results found": "이 메뉴의 첫 글이 곧 올라옵니다.", "No posts": "아직 글이 없습니다." };
   var MONTHS = { January: 1, February: 2, March: 3, April: 4, May: 5, June: 6, July: 7, August: 8, September: 9, October: 10, November: 11, December: 12 };
   function koreanize(root) {
     var w = document.createTreeWalker(root || document.body, NodeFilter.SHOW_TEXT, null), n, list = [];
@@ -344,6 +346,9 @@
     header(box, data, now);
     footer();
     koreanize(document.body);
+    // label / search status bar: move it under our brand bar so the masthead stays on top
+    var fm = document.querySelector(".post-filter-message");
+    if (fm && box.parentNode && !fm.dataset.wesMoved) { fm.dataset.wesMoved = "1"; box.parentNode.insertBefore(fm, box.nextSibling); }
     if (window.MutationObserver) { // comments and share menus load later
       var mo = new MutationObserver(function (ms) { ms.forEach(function (m) { [].forEach.call(m.addedNodes, function (x) { if (x.nodeType === 1) koreanize(x); }); }); });
       mo.observe(document.body, { childList: true, subtree: true });
