@@ -107,6 +107,29 @@
     host.appendChild(f);
   }
 
+  // Blogger keeps some theme text in English when the blog language can't be changed: translate the common ones
+  var KO = { "Post a Comment": "댓글 쓰기", "Comments": "댓글", "Share": "공유", "Get link": "링크 복사", "Email": "이메일",
+    "Other Apps": "다른 앱", "Show all": "전체 보기", "Show more": "더 보기", "Show less": "접기", "Home": "홈", "Labels": "라벨",
+    "More posts": "이전 글 더 보기", "Older Posts": "이전 글", "Newer Posts": "다음 글", "Read more": "길 안내 시작 →", "Read more »": "길 안내 시작 →",
+    "Popular posts from this blog": "많이 본 길 안내", "Report Abuse": "신고", "Search This Blog": "블로그 검색", "Archive": "보관함",
+    "No posts with label": "이 라벨의 글이 아직 없습니다", "Powered by Blogger": "Blogger 제공" };
+  var MONTHS = { January: 1, February: 2, March: 3, April: 4, May: 5, June: 6, July: 7, August: 8, September: 9, October: 10, November: 11, December: 12 };
+  function koreanize(root) {
+    var w = document.createTreeWalker(root || document.body, NodeFilter.SHOW_TEXT, null), n, list = [];
+    while ((n = w.nextNode())) list.push(n);
+    list.forEach(function (node) {
+      var p = node.parentNode; if (!p || /SCRIPT|STYLE|TEXTAREA/.test(p.nodeName) || (p.closest && p.closest(".post-body, #wes-signals"))) return;
+      var v = node.nodeValue, s = v.trim(); if (!s) return;
+      if (KO[s]) { node.nodeValue = v.replace(s, KO[s]); return; }
+      var m = /^(January|February|March|April|May|June|July|August|September|October|November|December) (\d{1,2}), (\d{4})$/.exec(s);
+      if (m) { node.nodeValue = v.replace(s, m[3] + "년 " + MONTHS[m[1]] + "월 " + (+m[2]) + "일"); return; }
+      var lab = /^Showing posts with the label (.+)$/.exec(s) || /^Showing posts with label (.+)\.?.*$/.exec(s);
+      if (lab) { node.nodeValue = v.replace(s, "라벨: " + lab[1]); return; }
+      var srch = /^Showing posts matching the search for (.+)$/.exec(s);
+      if (srch) node.nodeValue = v.replace(s, "검색 결과: " + srch[1]);
+    });
+  }
+
   function iconBtn(cls, label) { var b = el("button", "wes-ibtn " + cls); b.type = "button"; b.setAttribute("aria-label", label); return b; }
   function header(box, data, now) {
     var top = el("div", "wes-top");
@@ -320,6 +343,11 @@
     box.innerHTML = "";
     header(box, data, now);
     footer();
+    koreanize(document.body);
+    if (window.MutationObserver) { // comments and share menus load later
+      var mo = new MutationObserver(function (ms) { ms.forEach(function (m) { [].forEach.call(m.addedNodes, function (x) { if (x.nodeType === 1) koreanize(x); }); }); });
+      mo.observe(document.body, { childList: true, subtree: true });
+    }
     if (!isHome()) { box.className += " wes-compact"; return; } // post and static pages: brand bar only
 
     var head = el("div", "wes-sec");
