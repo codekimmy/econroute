@@ -317,7 +317,7 @@
     }
     c.appendChild(big);
     c.appendChild(el("span", "wes-track-note", (t.next_check ? (t.scored ? "다음" : "첫") + " 채점 " + korDate(t.next_check) + ". " : "") +
-      "빗나간 안내는 왜 경로를 다시 찾았는지까지 공개합니다."));
+      "경로를 이탈한 전망은 어디서 왜 벗어났는지까지 밝힙니다."));
     return c;
   }
 
