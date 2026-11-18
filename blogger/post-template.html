@@ -1,5 +1,5 @@
 <!-- 경제 내비 (ECON ROUTE) 표준 글 템플릿 — Blogger 글쓰기 'HTML 보기'에 붙여넣고 [ ] 부분만 채우세요.
-     문장 원칙: 내비 비유(도착·경로·우회)를 살려 짧게 씁니다. '무엇이' 도착하는지 모호할 때만 주어를 밝힙니다.
+     문장 원칙: 내비 비유(도착·경로·갈림길)를 살려 짧게 씁니다. '무엇이' 도착하는지 모호할 때만 주어를 밝힙니다.
        고칠 예) 국내 휘발유 값에는 약 2~3주 뒤 도착할 가능성이 큽니다. (무엇이?)
        고친 예) 이 영향은 2~3주 뒤 국내 휘발유 값에 도착할 전망입니다.
      용어 원칙: 전문 용어를 적극적으로 써서 문장을 줄이고, 모든 용어는 blogger/glossary.json에 등록해 첫 등장에 팝업이 뜨게 합니다.
@@ -11,9 +11,13 @@
 <!-- (경로 재탐색 후 자동 추가되는 배너 자리)
 <div class="wes-recheck"><b>경로 재탐색 · [날짜]</b><br>판정: [예상대로 도착/부분 적중/빗나감] · 원인: [시차] · <a href="#">재탐색 기록 보기</a></div> -->
 
+<!-- 맨 위: 시리즈 알약 + 메타 줄(읽는 시간은 자동 계산) -->
+<div class="wes-byline"><span class="wes-series">[오늘의 신호등 / 경로 안내 / 사건 경로 안내 / 지나온 길 / 운행 기록]</span><span class="wes-byline-t"><span class="wes-read-time"></span> · 신호 번호 [id] · <a href="/p/about.html">경제 내비 편집팀</a></span></div>
+
 <div class="wes-signal yellow">
   <div class="wes-light">노랑 신호 · [지표 이름]</div>
   <p class="wes-oneline">[한 줄 결론: 무슨 일이고, 내 지갑에 언제 어떻게 도착하는가]</p>
+  <span class="wes-limit"><b>자료 한계</b><span>[이 글에서 못 쓴 자료와 그 영향 한 줄. 없으면 이 줄 삭제]</span></span>
   <div class="wes-meta">확인 상태: [확인된 사실 / 관측 / 미확인] · 신호 번호 [usdkrw-2026-11-17]</div>
 </div>
 
@@ -38,9 +42,27 @@
   <small>단순 계산이며 실제 폭은 [환율·세금 등]에 따라 달라집니다.</small>
 </div>
 
-<h2>우회 경로</h2>
-<p><b>길이 짧아지는 경우(상방):</b> [조건과 결과]</p>
-<p><b>길이 길어지는 경우(하방):</b> [조건과 결과]</p>
+<h2>다음 갈림길</h2>
+<!-- 갈림길: 지금 경로가 '다음 사건'에 따라 두 갈래로 나뉘는 곳. 날짜 → 조건(만약 ~하면) → 내 지갑 결과 순서로 씁니다.
+     갈래 이름 = 내 지갑에 닿는 결과의 '길 모양': down 내리막길(내려감) / flat 평지(멈춤·제자리) / up 오르막길(올라감) / steep 급경사(크게 올라감)
+     맥락이 맞을 때만: short 지름길(영향이 예상보다 빨리 도착) / jam 정체 구간(영향이 막혀 늦게 도착)
+     '상방/하방' 같은 시장 용어, 평지 갈래의 '길이 끊긴다' 표현은 쓰지 않습니다(길 모양 그대로: 평평해진다·멈춘다). 결과 아래 부연 설명은 달지 않습니다. -->
+<div class="wes-fork">
+  <div class="wes-fork-now"><span class="wes-dot red"></span><small>지금 위치</small><b>[지표 수치] · 내 [생활 항목]으로 향하는 중</b></div>
+  <div class="wes-fork-gate"><span>다음 갈림길 · [날짜 사건] · [날짜 사건]</span></div>
+  <div class="wes-fork-ways">
+    <div class="wes-way flat">
+      <span class="wes-way-tag">평지</span>
+      <p class="wes-way-if">만약 [조건]하면</p>
+      <p class="wes-way-to"><small>내 [생활 항목]</small><b>[결과: 오르다 멈춤 등]</b></p>
+    </div>
+    <div class="wes-way up">
+      <span class="wes-way-tag">오르막길</span>
+      <p class="wes-way-if">만약 [조건]하면</p>
+      <p class="wes-way-to"><small>내 [생활 항목]</small><b>[결과: 더 오름 등]</b></p>
+    </div>
+  </div>
+</div>
 
 <h2>지나온 길: 전에도 이 길을 지났나</h2>
 <p>[장면 묘사 한 문장으로 시작] [과거 사례 1~3건]</p>
@@ -57,10 +79,13 @@
 <p>[이 안내가 틀릴 수 있는 가장 강한 근거]</p>
 
 <h2>전방 주의 구간</h2>
-<p>[다음에 볼 지표와 발표일]</p>
-<p><b>독자 예측:</b> [질문] <!-- Google Forms 임베드 --></p>
-
-<p><b>운행 기록 등록:</b> 이 안내는 [날짜]에 채점합니다. 기준: [지표] [범위].</p>
+<div class="wes-ahead">
+  <ul>
+    <li><b>[12월 9일]</b><span><span class="wes-where">[미국]</span>[일정]</span></li>
+    <li><b>[12월 10일]</b><span><span class="wes-where">[미국]</span>[일정]</span></li>
+  </ul>
+  <div class="wes-track-reg"><b>운행 기록 등록</b> · [날짜] 채점 · 전망: [기본 경로 / 평지 등]. 기준: [지표] [범위]이면 적중.</div>
+</div>
 
 <details class="wes-evidence">
   <summary>이 안내의 근거</summary>
@@ -70,4 +95,5 @@
 </details>
 <!-- 유료 미사용 자료가 이 글의 결론에 직접 영향을 주면, 근거 상자 안에만 두지 말고 10초 신호등 박스 아래에도 한 줄로 노출하세요. -->
 
-<p style="font-size:.8em;color:#6b6b70">경제 내비는 정보 제공용이며 특정 투자를 권유하지 않습니다. <a href="/p/disclaimer.html">면책 고지</a></p>
+<p class="wes-disclaimer">정보 제공용이며 특정 투자를 권유하지 않습니다. <a href="/p/disclaimer.html">면책 고지</a></p>
+<details class="wes-revisions"><summary>수정 기록</summary>[날짜] 첫 발행.</details>

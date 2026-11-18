@@ -163,7 +163,15 @@
       window.addEventListener("scroll", mark, { passive: true });
     });
   }
-  function decorate() { tagHeadings(); addLegends(); addDepthTabs(); }
+  // reading time: about 500 Korean characters per minute
+  function readTime() {
+    document.querySelectorAll(".post-body .wes-read-time").forEach(function (el) {
+      var body = el.closest(".post-body"); if (!body) return;
+      var n = (body.textContent || "").replace(/\s+/g, "").length;
+      el.textContent = Math.max(1, Math.round(n / 500)) + "분";
+    });
+  }
+  function decorate() { tagHeadings(); addLegends(); addDepthTabs(); readTime(); }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", decorate); else decorate();
   window.addEventListener("scroll", closeTip, { passive: true });
   function loadGlossary() { fetch(WES_GLOSSARY_URL).then(function (r) { return r.json(); }).then(run).catch(function () {}); }

@@ -221,7 +221,8 @@
       var box = card("최신 길 안내", "wes-latest");
       var a = el("a", "wes-story"); a.href = link;
       var no = String(total); while (no.length < 3) no = "0" + no;
-      a.appendChild(el("span", "wes-pill", "경로 안내 · ROUTE " + no));
+      var series = doc.querySelector(".wes-series");
+      a.appendChild(el("span", "wes-pill", (series ? series.textContent.trim() : "경로 안내") + " · ROUTE " + no));
       a.appendChild(el("span", "wes-story-h", (e.title.$t || "").split(" — ")[0]));
       var lede = doc.querySelector(".wes-oneline");
       if (lede) a.appendChild(el("span", "wes-story-lede", lede.textContent.replace(/\s+/g, " ").trim()));
