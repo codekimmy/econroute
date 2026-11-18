@@ -40,6 +40,16 @@
   var CADENCE = { daily: "매일", monthly: "매월", meeting: "회의 때" };
   var CAD_FALLBACK = { us_policy_rate: "meeting", kr_base_rate: "meeting", us_cpi: "monthly", kr_cpi: "monthly", copper: "monthly" };
   var STALE_DAYS = { daily: 5, monthly: 100, meeting: 100000 };
+  // what arrives at the destination, by direction of the move (fallback until latest.json carries it)
+  var EFFECT = { us_policy_rate: ["상승 압력", "하락 여지"], us_10y: ["상승 압력", "하락 여지"], us_cpi: ["부담 증가", "부담 완화"],
+    kr_base_rate: ["이자 증가", "이자 감소"], kr_cpi: ["부담 증가", "부담 완화"], usdkrw: ["비용 증가", "비용 감소"],
+    kospi: ["평가액 증가", "평가액 감소"], sp500: ["평가액 증가", "평가액 감소"], wti: ["상승 압력", "하락 여지"],
+    copper: ["상승 압력", "하락 여지"], btc: ["평가액 증가", "평가액 감소"] };
+  function effectOf(s) {
+    var c = Number(s.change || 0); if (!c) return "";
+    var e = EFFECT[s.id] || ["", ""];
+    return c > 0 ? (s.effect_up || e[0]) : (s.effect_down || e[1]);
+  }
   function cadenceOf(s) { return s.cadence || CAD_FALLBACK[s.id] || "daily"; }
   function ageDays(s, now) { return s.date ? Math.round(todayNum(now) - dayNum(s.date)) : 0; }
   function freshChips(s, now) {
@@ -68,21 +78,46 @@
   }
   function card(title, extra) { var c = el("section", "wes-box" + (extra ? " " + extra : "")); if (title) c.appendChild(el("h2", "wes-box-h", title)); return c; }
 
+  function iconBtn(cls, label) { var b = el("button", "wes-ibtn " + cls); b.type = "button"; b.setAttribute("aria-label", label); return b; }
   function header(box, data, now) {
     var top = el("div", "wes-top");
+    var left = el("div", "wes-top-l");
+    if (!isHome()) {
+      var back = iconBtn("wes-back", "뒤로 가기");
+      back.addEventListener("click", function () { if (history.length > 1 && document.referrer.indexOf(location.host) >= 0) history.back(); else location.href = "/"; });
+      left.appendChild(back);
+    }
     var brand = el("a", "wes-brand"); brand.href = "/";
     brand.appendChild(el("span", "wes-logo"));
     var bt = el("span", "wes-brand-t"); bt.appendChild(el("b", null, "경제 내비")); bt.appendChild(el("small", null, "ECON ROUTE"));
-    brand.appendChild(bt); top.appendChild(brand);
+    brand.appendChild(bt); left.appendChild(brand);
+    top.appendChild(left);
+    var right = el("div", "wes-top-r");
     var up = (data.upcoming || [])[0];
     if (up) {
       var nx = el("span", "wes-next");
       nx.appendChild(el("small", null, "다음 안내"));
+      if (up.where) nx.appendChild(el("span", "wes-where", up.where));
       nx.appendChild(el("b", null, korDate(up.date) + " " + up.name));
       nx.appendChild(el("em", null, dday(up.date, now)));
-      top.appendChild(nx);
+      right.appendChild(nx);
     }
+    var sb = iconBtn("wes-search-btn", "검색");
+    right.appendChild(sb);
+    top.appendChild(right);
     box.appendChild(top);
+
+    var form = el("form", "wes-search"); form.action = "/search"; form.method = "get"; form.setAttribute("role", "search");
+    var q = el("input"); q.type = "search"; q.name = "q"; q.placeholder = "지표, 용어, 글 제목 검색"; q.setAttribute("aria-label", "블로그 검색");
+    var go = el("button", null, "검색"); go.type = "submit";
+    form.appendChild(q); form.appendChild(go);
+    box.appendChild(form);
+    sb.addEventListener("click", function () {
+      var open = form.className.indexOf("open") < 0;
+      form.className = "wes-search" + (open ? " open" : "");
+      if (open) q.focus();
+    });
+
     var g = kst(new Date(data.generated_at));
     var strip = el("div", "wes-strip");
     strip.appendChild(el("span", null, "세계경제에서 내 지갑까지, 길 안내"));
@@ -107,7 +142,10 @@
     if (s.dest) {
       var d = el("div", "wes-dest");
       d.appendChild(el("span", "wes-pin"));
-      d.appendChild(el("span", "wes-dest-t", "도착지: " + s.dest));
+      var dt = el("span", "wes-dest-t", "도착지: " + s.dest);
+      var ef = effectOf(s);
+      if (ef) dt.appendChild(el("b", "wes-effect " + (Number(s.change) > 0 ? "up" : "down"), " " + ef));
+      d.appendChild(dt);
       d.appendChild(el("span", "wes-mono", s.eta || ""));
       c.appendChild(d);
     }
@@ -136,9 +174,13 @@
       if (chain) {
         var lis = [].slice.call(chain.querySelectorAll("li"));
         var certainty = lis.map(function (li) { var m = /\b(fact|likely|maybe)\b/.exec(li.className); return m ? m[1] : ""; });
+        var wheres = [];
         var items = lis.map(function (li) {
           var c = li.cloneNode(true);
           [].forEach.call(c.querySelectorAll(".wes-lag"), function (x) { x.parentNode.removeChild(x); });
+          var wh = c.querySelector(".wes-where");
+          wheres.push(wh ? wh.textContent.trim() : "");
+          if (wh) wh.parentNode.removeChild(wh);
           return c.textContent.replace(/\s+/g, " ").trim().replace(/^(출발|경유|도착)\s*·\s*/, "");
         });
         var route = el("span", "wes-route");
@@ -148,8 +190,13 @@
         });
         a.appendChild(route);
         var labels = el("span", "wes-route-l");
-        labels.appendChild(el("span", null, items[0]));
-        labels.appendChild(el("span", null, items[items.length - 1]));
+        [0, items.length - 1].forEach(function (k, j) {
+          var sp = el("span", j ? "wes-route-end" : "wes-route-start");
+          sp.appendChild(el("small", null, j ? "도착" : "출발"));
+          if (wheres[k]) sp.appendChild(el("span", "wes-where", wheres[k]));
+          sp.appendChild(el("span", "wes-route-t", items[k]));
+          labels.appendChild(sp);
+        });
         a.appendChild(labels);
         if (certainty.join("")) a.appendChild(legendFor(certainty.join(" ")));
       }
@@ -168,7 +215,10 @@
     ups.forEach(function (u) {
       var r = el("div", "wes-ev");
       r.appendChild(el("span", "wes-mono", md(u.date)));
-      r.appendChild(el("span", "wes-ev-t", u.name));
+      var et = el("span", "wes-ev-t");
+      if (u.where) et.appendChild(el("span", "wes-where", u.where));
+      et.appendChild(document.createTextNode(u.name));
+      r.appendChild(et);
       r.appendChild(el("em", null, dday(u.date, now)));
       c.appendChild(r);
     });
