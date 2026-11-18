@@ -27,6 +27,7 @@ def main():
             s["cadence"], s["cadence_note"] = ind["cadence"], ind.get("cadence_note", "")
         if ind.get("dest"):
             s["dest"], s["eta"] = ind["dest"], ind.get("eta", "")
+            s["effect_up"], s["effect_down"] = ind.get("effect_up", ""), ind.get("effect_down", "")
         signals.append(s)
     signals.sort(key=lambda s: (ORDER.get(s["color"], 9), -s.get("percentile", 0)))
 
