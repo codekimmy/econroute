@@ -17,7 +17,9 @@
       "dest": "대출·예금 금리",
       "eta": "수개월",
       "cadence": "meeting",
-      "cadence_note": "FOMC 회의 후 반영"
+      "cadence_note": "FOMC 회의 후 반영",
+      "effect_up": "상승 압력",
+      "effect_down": "하락 여지"
     },
     {
       "id": "us_10y",
@@ -35,7 +37,9 @@
       "dest": "내 대출 금리",
       "eta": "수개월",
       "cadence": "daily",
-      "cadence_note": "미국 자료라 1~3일 늦게 반영"
+      "cadence_note": "미국 자료라 1~3일 늦게 반영",
+      "effect_up": "상승 압력",
+      "effect_down": "하락 여지"
     },
     {
       "id": "us_cpi",
@@ -53,7 +57,9 @@
       "dest": "장바구니 물가",
       "eta": "수개월",
       "cadence": "monthly",
-      "cadence_note": "매월 중순 발표, 전월치"
+      "cadence_note": "매월 중순 발표, 전월치",
+      "effect_up": "부담 증가",
+      "effect_down": "부담 완화"
     },
     {
       "id": "kr_base_rate",
@@ -73,7 +79,9 @@
       "dest": "대출·예금 금리",
       "eta": "수주",
       "cadence": "meeting",
-      "cadence_note": "금통위 회의 후 반영"
+      "cadence_note": "금통위 회의 후 반영",
+      "effect_up": "이자 증가",
+      "effect_down": "이자 감소"
     },
     {
       "id": "kr_cpi",
@@ -93,7 +101,9 @@
       "dest": "장바구니",
       "eta": "바로",
       "cadence": "monthly",
-      "cadence_note": "매월 초 발표, 전월치"
+      "cadence_note": "매월 초 발표, 전월치",
+      "effect_up": "부담 증가",
+      "effect_down": "부담 완화"
     },
     {
       "id": "usdkrw",
@@ -113,7 +123,9 @@
       "dest": "직구·해외여행",
       "eta": "바로",
       "cadence": "daily",
-      "cadence_note": "영업일 매일"
+      "cadence_note": "영업일 매일",
+      "effect_up": "비용 증가",
+      "effect_down": "비용 감소"
     },
     {
       "id": "kospi",
@@ -133,7 +145,9 @@
       "dest": "국내 주식·ETF",
       "eta": "바로",
       "cadence": "daily",
-      "cadence_note": "영업일 매일"
+      "cadence_note": "영업일 매일",
+      "effect_up": "평가액 증가",
+      "effect_down": "평가액 감소"
     },
     {
       "id": "sp500",
@@ -153,7 +167,9 @@
       "dest": "해외 주식·연금",
       "eta": "바로",
       "cadence": "daily",
-      "cadence_note": "미국 자료라 하루 늦게 반영"
+      "cadence_note": "미국 자료라 하루 늦게 반영",
+      "effect_up": "평가액 증가",
+      "effect_down": "평가액 감소"
     },
     {
       "id": "wti",
@@ -171,7 +187,9 @@
       "dest": "주유비",
       "eta": "2~3주",
       "cadence": "daily",
-      "cadence_note": "미국 자료라 수일 늦게 반영될 수 있음"
+      "cadence_note": "미국 자료라 수일 늦게 반영될 수 있음",
+      "effect_up": "상승 압력",
+      "effect_down": "하락 여지"
     },
     {
       "id": "copper",
@@ -190,7 +208,9 @@
       "dest": "전기·건설 자재값",
       "eta": "수개월",
       "cadence": "monthly",
-      "cadence_note": "월평균, 두세 달 늦게 반영"
+      "cadence_note": "월평균, 두세 달 늦게 반영",
+      "effect_up": "상승 압력",
+      "effect_down": "하락 여지"
     },
     {
       "id": "btc",
@@ -208,7 +228,9 @@
       "dest": "코인 계좌",
       "eta": "바로",
       "cadence": "daily",
-      "cadence_note": "매일(주말 포함)"
+      "cadence_note": "매일(주말 포함)",
+      "effect_up": "평가액 증가",
+      "effect_down": "평가액 감소"
     }
   ],
   "pending": [
@@ -297,12 +319,14 @@
     {
       "date": "2026-12-09",
       "name": "FOMC 금리 결정",
-      "note": "미국 기준금리 발표"
+      "note": "미국 기준금리 발표",
+      "where": "미국"
     },
     {
       "date": "2026-12-10",
-      "name": "미국 11월 CPI",
-      "note": "금리 결정 다음 날"
+      "name": "11월 CPI(소비자물가)",
+      "note": "금리 결정 다음 날",
+      "where": "미국"
     }
   ],
   "track": {
