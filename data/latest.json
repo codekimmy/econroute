@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-22T01:27:02+00:00",
+  "generated_at": "2026-11-23T01:51:43+00:00",
   "rule_version": "1.0",
   "signals": [
     {
@@ -74,15 +74,15 @@
       "id": "btc",
       "name": "비트코인",
       "rule_version": "1.0",
-      "date": "2026-11-21",
-      "value": 60071.14,
+      "date": "2026-11-22",
+      "value": 60991.86,
       "unit": "달러",
-      "change": -6.9212,
+      "change": -5.5921,
       "change_unit": "%",
       "direction": "하락",
-      "percentile": 70.3,
+      "percentile": 62.0,
       "color": "초록",
-      "reason": "최근 5거래일 변동 -6.92% — 평소 범위의 움직임",
+      "reason": "최근 5거래일 변동 -5.59% — 평소 범위의 움직임",
       "compared_span": "지난 10년",
       "data_status": "정상",
       "cadence": "daily",
@@ -137,6 +137,28 @@
       "effect_down": "하락 여지"
     },
     {
+      "id": "usdkrw",
+      "name": "원/달러 환율",
+      "rule_version": "1.0",
+      "date": "2026-11-23",
+      "value": 1337.3,
+      "unit": "원",
+      "change": 0.2699,
+      "change_unit": "%",
+      "direction": "상승",
+      "percentile": 21.4,
+      "color": "초록",
+      "reason": "최근 5거래일 변동 +0.27% — 평소 범위의 움직임",
+      "compared_span": "지난 10년",
+      "data_status": "정상",
+      "cadence": "daily",
+      "cadence_note": "영업일 매일",
+      "dest": "직구·해외여행",
+      "eta": "바로",
+      "effect_up": "비용 증가",
+      "effect_down": "비용 감소"
+    },
+    {
       "id": "kr_cpi",
       "name": "한국 소비자물가(전년비)",
       "rule_version": "1.0",
@@ -157,28 +179,6 @@
       "eta": "바로",
       "effect_up": "부담 증가",
       "effect_down": "부담 완화"
-    },
-    {
-      "id": "usdkrw",
-      "name": "원/달러 환율",
-      "rule_version": "1.0",
-      "date": "2026-11-20",
-      "value": 1330.8,
-      "unit": "원",
-      "change": -0.1201,
-      "change_unit": "%",
-      "direction": "하락",
-      "percentile": 9.3,
-      "color": "초록",
-      "reason": "최근 5거래일 변동 -0.12% — 평소 범위의 움직임",
-      "compared_span": "지난 10년",
-      "data_status": "정상",
-      "cadence": "daily",
-      "cadence_note": "영업일 매일",
-      "dest": "직구·해외여행",
-      "eta": "바로",
-      "effect_up": "비용 증가",
-      "effect_down": "비용 감소"
     },
     {
       "id": "wti",
@@ -206,7 +206,7 @@
       "id": "us_policy_rate",
       "name": "미국 기준금리(상단)",
       "rule_version": "1.0",
-      "date": "2026-11-21",
+      "date": "2026-11-22",
       "value": 4.0,
       "unit": "%",
       "change": 0.0,
@@ -226,7 +226,7 @@
       "id": "kr_base_rate",
       "name": "한국 기준금리",
       "rule_version": "1.0",
-      "date": "2026-11-19",
+      "date": "2026-11-20",
       "value": 3.0,
       "unit": "%",
       "change": 0.0,
@@ -247,15 +247,15 @@
     {
       "id": "us_policy_rate",
       "name": "미국 기준금리(상단)",
-      "fetched_at": "2026-11-22T01:26:55+00:00",
+      "fetched_at": "2026-11-23T01:51:37+00:00",
       "revisions": 0,
-      "last_date": "2026-11-21",
+      "last_date": "2026-11-22",
       "status": "정상"
     },
     {
       "id": "us_10y",
       "name": "미국 10년물 국채금리",
-      "fetched_at": "2026-11-22T01:26:56+00:00",
+      "fetched_at": "2026-11-23T01:51:37+00:00",
       "revisions": 0,
       "last_date": "2026-11-19",
       "status": "정상"
@@ -263,7 +263,7 @@
     {
       "id": "us_cpi",
       "name": "미국 소비자물가(전년비)",
-      "fetched_at": "2026-11-22T01:26:56+00:00",
+      "fetched_at": "2026-11-23T01:51:38+00:00",
       "revisions": 0,
       "last_date": "2026-10-01",
       "status": "정상"
@@ -271,15 +271,15 @@
     {
       "id": "kr_base_rate",
       "name": "한국 기준금리",
-      "fetched_at": "2026-11-22T01:26:56+00:00",
+      "fetched_at": "2026-11-23T01:51:38+00:00",
       "revisions": 0,
-      "last_date": "2026-11-19",
+      "last_date": "2026-11-20",
       "status": "정상"
     },
     {
       "id": "kr_cpi",
       "name": "한국 소비자물가(전년비)",
-      "fetched_at": "2026-11-22T01:26:58+00:00",
+      "fetched_at": "2026-11-23T01:51:39+00:00",
       "revisions": 0,
       "last_date": "2026-10-01",
       "status": "정상"
@@ -287,15 +287,15 @@
     {
       "id": "usdkrw",
       "name": "원/달러 환율",
-      "fetched_at": "2026-11-22T01:26:58+00:00",
+      "fetched_at": "2026-11-23T01:51:40+00:00",
       "revisions": 0,
-      "last_date": "2026-11-20",
+      "last_date": "2026-11-23",
       "status": "정상"
     },
     {
       "id": "kospi",
       "name": "코스피",
-      "fetched_at": "2026-11-22T01:27:00+00:00",
+      "fetched_at": "2026-11-23T01:51:41+00:00",
       "revisions": 0,
       "last_date": "2026-11-20",
       "status": "정상"
@@ -303,7 +303,7 @@
     {
       "id": "sp500",
       "name": "S&P 500",
-      "fetched_at": "2026-11-22T01:27:01+00:00",
+      "fetched_at": "2026-11-23T01:51:42+00:00",
       "revisions": 0,
       "last_date": "2026-11-19",
       "status": "정상"
@@ -311,7 +311,7 @@
     {
       "id": "wti",
       "name": "WTI 원유",
-      "fetched_at": "2026-11-22T01:27:02+00:00",
+      "fetched_at": "2026-11-23T01:51:43+00:00",
       "revisions": 0,
       "last_date": "2026-11-17",
       "status": "정상"
@@ -319,7 +319,7 @@
     {
       "id": "copper",
       "name": "구리(월평균)",
-      "fetched_at": "2026-11-22T01:27:02+00:00",
+      "fetched_at": "2026-11-23T01:51:43+00:00",
       "revisions": 0,
       "last_date": "2026-09-01",
       "status": "정상"
@@ -327,9 +327,9 @@
     {
       "id": "btc",
       "name": "비트코인",
-      "fetched_at": "2026-11-22T01:27:02+00:00",
+      "fetched_at": "2026-11-23T01:51:43+00:00",
       "revisions": 0,
-      "last_date": "2026-11-21",
+      "last_date": "2026-11-22",
       "status": "정상"
     },
     {
